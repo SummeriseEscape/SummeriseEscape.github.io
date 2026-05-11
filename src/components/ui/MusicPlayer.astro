@@ -116,13 +116,12 @@
     />
   </div>
 
-  <!-- Audio element (silent placeholder) -->
+  <!-- Audio element -->
   <audio
     id="audio-element"
     preload="metadata"
   >
-    <!-- Replace src with actual audio files -->
-    <source src="/audio/placeholder.mp3" type="audio/mpeg" />
+    <source type="audio/flac" />
   </audio>
 </div>
 
@@ -143,14 +142,17 @@
 
     // Playlist (silent placeholders — replace with real audio)
     const playlist = [
-    { name: '揪心的玩笑与漫长的白日梦', src: 'public/audio/万能青年旅店 - 揪心的玩笑与漫长的白日梦.flac', duration: '03:42' },
-    { name: '美好事物', src: 'public\audio\房东的猫 - 美好事物 (2017).flac', duration: '04:15' },
-    { name: '躺在凌晨五点半的海岸', src: 'public\audio\房东的猫 - 躺在凌晨五点半的海岸.flac', duration: '05:01' },
-    { name: '我从未到过长江南岸', src: 'public\audio\柠安 - 我从未到过长江南岸.flac', duration: '03:28' },
-    { name: '海盗船长2.0', src: 'public\audio\花粥,风子 - 海盗船长.flac', duration: '04:50' },
+    { name: '揪心的玩笑与漫长的白日梦', src: '/audio/万能青年旅店 - 揪心的玩笑与漫长的白日梦.flac', duration: '03:42' },
+    { name: '美好事物', src: '/audio/房东的猫 - 美好事物 (2017).flac', duration: '04:15' },
+    { name: '躺在凌晨五点半的海岸', src: '/audio/房东的猫 - 躺在凌晨五点半的海岸.flac', duration: '05:01' },
+    { name: '我从未到过长江南岸', src: '/audio/柠安 - 我从未到过长江南岸.flac', duration: '03:28' },
+    { name: '海盗船长2.0', src: '/audio/花粥,风子 - 海盗船长2.flac', duration: '04:50' },
   ];
   let currentTrack = 0;
   let isPlaying = false;
+
+  // Load the first track on init
+  loadTrack(0);
 
   function open() {
     player.style.opacity = '1';
@@ -179,7 +181,7 @@
     } else {
       audio.play().catch(() => {
         // Audio file not available — silent placeholder
-        console.log('音频文件未配置，请在 public/audio/ 中添加 .mp3 文件');
+        console.log('无法播放音频');
       });
     }
   }
