@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#F6F3EE"/>
+  <circle cx="200" cy="150" r="80" fill="none" stroke="#AFC3D4" stroke-width="0.8" opacity="0.3"/>
+  <circle cx="200" cy="150" r="40" fill="none" stroke="#AFC3D4" stroke-width="0.5" opacity="0.2"/>
+  <circle cx="950" cy="480" r="60" fill="none" stroke="#E7C6C0" stroke-width="0.6" opacity="0.25"/>
+  <text x="600" y="270" font-family="serif" font-size="96" font-weight="bold" fill="#31435A" text-anchor="middle" letter-spacing="0.05em">星风</text>
+  <text x="600" y="340" font-family="serif" font-size="28" fill="#6B7A8A" text-anchor="middle" font-style="italic" letter-spacing="0.1em">风吹过夏夜星辰</text>
+  <line x1="500" y1="390" x2="700" y2="390" stroke="#31435A" stroke-width="0.5" opacity="0.15"/>
+  <circle cx="560" cy="460" r="1" fill="#31435A" opacity="0.15"/>
+  <circle cx="580" cy="450" r="0.7" fill="#31435A" opacity="0.12"/>
+  <circle cx="620" cy="465" r="1.2" fill="#31435A" opacity="0.18"/>
+  <circle cx="640" cy="455" r="0.8" fill="#31435A" opacity="0.1"/>
+</svg>

@@ -1,0 +1,23 @@
+---
+const moodMap: Record<string, { label: string; color: string }> = {
+  tranquil: { label: '静谧', color: 'var(--deep-sky)' },
+  nostalgic: { label: '怀旧', color: 'var(--dust-purple)' },
+  dreamy: { label: '梦幻', color: 'var(--breeze-blue)' },
+  warm: { label: '温暖', color: 'var(--summer-pink)' },
+  melancholic: { label: '忧郁', color: 'var(--night-blue)' },
+};
+
+interface Props {
+  mood: string;
+}
+
+const { mood } = Astro.props;
+const info = moodMap[mood] ?? { label: mood, color: 'var(--text-muted)' };
+---
+
+<span
+  class="mood-badge inline-flex items-center gap-1.5 text-xs tracking-wider px-2 py-0.5 rounded-full"
+  style={`color: var(--bg-main); background: ${info.color}; font-family: var(--font-sans); font-size: 0.7rem;`}
+>
+  {info.label}
+</span>

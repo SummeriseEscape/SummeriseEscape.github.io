@@ -1,0 +1,15 @@
+<canvas
+  id="starfield-canvas"
+  class="absolute inset-0 w-full h-full pointer-events-none"
+  style="z-index: 0;"
+></canvas>
+
+<script>
+  import { Starfield } from '@/animations/starfield';
+
+  const canvas = document.getElementById('starfield-canvas') as HTMLCanvasElement;
+  if (canvas) {
+    const starfield = new Starfield(canvas, 200);
+    starfield.start();
+  }
+</script>

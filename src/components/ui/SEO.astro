@@ -1,0 +1,34 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: 'website' | 'article';
+}
+
+const {
+  title,
+  description = '一个拥有呼吸感与情绪氛围的数字空间。',
+  image = '/og-image.svg',
+  type = 'website',
+} = Astro.props;
+
+const fullTitle = title ? `${title} — 星风` : '星风 — 风吹过夏夜星辰';
+---
+
+<!-- Open Graph -->
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content={type} />
+<meta property="og:image" content={new URL(image, Astro.site).href} />
+<meta property="og:site_name" content="星风" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={new URL(image, Astro.site).href} />
+
+<!-- Standard -->
+<meta name="description" content={description} />
+<link rel="alternate" type="application/rss+xml" title="星风 RSS" href={new URL('/rss.xml', Astro.site).href} />

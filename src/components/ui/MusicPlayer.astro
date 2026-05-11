@@ -1,0 +1,209 @@
+<!-- Music player panel (hidden by default) -->
+<div
+  id="music-player"
+  class="fixed z-50 opacity-0 pointer-events-none translate-y-4"
+  style="
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 340px;
+    padding: 1.25rem;
+    background: color-mix(in srgb, var(--bg-main) 88%, transparent);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-light);
+    transition: opacity var(--transition-medium), transform var(--transition-medium);
+    font-family: var(--font-sans);
+  "
+>
+  <div class="flex items-center justify-between mb-3">
+    <span class="text-xs tracking-[0.2em] uppercase" style="color: var(--text-muted);">
+      音乐
+    </span>
+    <button
+      id="music-close"
+      class="bg-transparent border-none cursor-pointer p-1"
+      style="color: var(--text-muted);"
+      aria-label="关闭音乐播放器"
+    >
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Track info -->
+  <div
+    class="text-center py-2 mb-3"
+    style="border-top: 1px solid var(--border-soft); border-bottom: 1px solid var(--border-soft);"
+  >
+    <p
+      id="track-name"
+      class="text-sm font-medium m-0 mb-0.5"
+      style="color: var(--text-primary);"
+    >
+      夏夜之风
+    </p>
+    <p
+      id="track-duration"
+      class="text-xs m-0"
+      style="color: var(--text-muted);"
+    >
+      03:42
+    </p>
+  </div>
+
+  <!-- Controls -->
+  <div class="flex items-center justify-center gap-5">
+    <button
+      id="btn-prev"
+      class="bg-transparent border-none cursor-pointer p-1 transition-opacity hover:opacity-70"
+      style="color: var(--text-secondary);"
+      aria-label="上一曲"
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+        <polygon points="19 20 9 12 19 4 19 20"/>
+        <line x1="5" y1="19" x2="5" y2="5"/>
+      </svg>
+    </button>
+    <button
+      id="btn-play"
+      class="bg-transparent border-none cursor-pointer p-2 transition-opacity hover:opacity-70"
+      style="color: var(--text-primary);"
+      aria-label="播放"
+    >
+      <svg id="icon-play" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+        <polygon points="5 3 19 12 5 21 5 3"/>
+      </svg>
+      <svg id="icon-pause" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" style="display:none;">
+        <line x1="6" y1="4" x2="6" y2="20"/>
+        <line x1="18" y1="4" x2="18" y2="20"/>
+      </svg>
+    </button>
+    <button
+      id="btn-next"
+      class="bg-transparent border-none cursor-pointer p-1 transition-opacity hover:opacity-70"
+      style="color: var(--text-secondary);"
+      aria-label="下一曲"
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+        <polygon points="5 4 15 12 5 20 5 4"/>
+        <line x1="19" y1="5" x2="19" y2="19"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Volume -->
+  <div class="flex items-center gap-2 mt-3">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.2">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+    </svg>
+    <input
+      id="volume-slider"
+      type="range"
+      min="0"
+      max="100"
+      value="60"
+      class="flex-1"
+      style="
+        -webkit-appearance: none;
+        appearance: none;
+        height: 1px;
+        background: var(--border-light);
+        outline: none;
+      "
+    />
+  </div>
+
+  <!-- Audio element (silent placeholder) -->
+  <audio
+    id="audio-element"
+    preload="metadata"
+  >
+    <!-- Replace src with actual audio files -->
+    <source src="/audio/placeholder.mp3" type="audio/mpeg" />
+  </audio>
+</div>
+
+<script>
+  const player = document.getElementById('music-player')!;
+  const trigger = document.getElementById('music-trigger');
+  const closeBtn = document.getElementById('music-close');
+  const btnPlay = document.getElementById('btn-play')!;
+  const btnPrev = document.getElementById('btn-prev')!;
+  const btnNext = document.getElementById('btn-next')!;
+  const iconPlay = document.getElementById('icon-play')!;
+  const iconPause = document.getElementById('icon-pause')!;
+  const trackName = document.getElementById('track-name')!;
+  const trackDuration = document.getElementById('track-duration')!;
+  const volumeSlider = document.getElementById('volume-slider') as HTMLInputElement;
+  const audio = document.getElementById('audio-element') as HTMLAudioElement;
+
+  // Playlist (silent placeholders — replace with real audio)
+  const playlist = [
+    { name: '夏夜之风', src: '/audio/placeholder.mp3', duration: '03:42' },
+    { name: '月光海', src: '/audio/placeholder.mp3', duration: '04:15' },
+    { name: '星空列车', src: '/audio/placeholder.mp3', duration: '05:01' },
+    { name: '晚霞', src: '/audio/placeholder.mp3', duration: '03:28' },
+    { name: '雨后森林', src: '/audio/placeholder.mp3', duration: '04:50' },
+  ];
+  let currentTrack = 0;
+  let isPlaying = false;
+
+  function open() {
+    player.style.opacity = '1';
+    player.style.pointerEvents = 'auto';
+    player.style.transform = 'translateX(-50%) translateY(0)';
+  }
+
+  function close() {
+    player.style.opacity = '0';
+    player.style.pointerEvents = 'none';
+    player.style.transform = 'translateX(-50%) translateY(16px)';
+  }
+
+  function loadTrack(index: number) {
+    currentTrack = index;
+    const track = playlist[index];
+    trackName.textContent = track.name;
+    trackDuration.textContent = track.duration;
+    audio.querySelector('source')!.src = track.src;
+    audio.load();
+  }
+
+  function togglePlay() {
+    if (isPlaying) {
+      audio.pause();
+    } else {
+      audio.play().catch(() => {
+        // Audio file not available — silent placeholder
+        console.log('音频文件未配置，请在 public/audio/ 中添加 .mp3 文件');
+      });
+    }
+  }
+
+  function updatePlayIcon() {
+    iconPlay.style.display = isPlaying ? 'none' : 'block';
+    iconPause.style.display = isPlaying ? 'block' : 'none';
+  }
+
+  audio.addEventListener('play', () => { isPlaying = true; updatePlayIcon(); });
+  audio.addEventListener('pause', () => { isPlaying = false; updatePlayIcon(); });
+  audio.addEventListener('ended', () => { currentTrack = (currentTrack + 1) % playlist.length; loadTrack(currentTrack); audio.play().catch(() => {}); });
+
+  trigger?.addEventListener('click', open);
+  closeBtn?.addEventListener('click', close);
+  btnPlay.addEventListener('click', togglePlay);
+  btnPrev.addEventListener('click', () => { currentTrack = (currentTrack - 1 + playlist.length) % playlist.length; loadTrack(currentTrack); if (isPlaying) audio.play().catch(() => {}); });
+  btnNext.addEventListener('click', () => { currentTrack = (currentTrack + 1) % playlist.length; loadTrack(currentTrack); if (isPlaying) audio.play().catch(() => {}); });
+  volumeSlider.addEventListener('input', () => { audio.volume = Number(volumeSlider.value) / 100; });
+
+  // Close on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') close();
+  });
+
+  // Initial volume
+  audio.volume = 0.6;
+</script>

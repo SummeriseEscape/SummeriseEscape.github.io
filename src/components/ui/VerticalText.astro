@@ -1,0 +1,23 @@
+---
+interface Props {
+  text: string;
+  class?: string;
+}
+
+const { text, class: className } = Astro.props;
+---
+
+<span
+  class:list={[className]}
+  class="vertical-text"
+  style="
+    writing-mode: vertical-rl;
+    font-family: var(--font-serif);
+    font-size: 0.85rem;
+    letter-spacing: 0.3em;
+    color: var(--text-muted);
+    line-height: 2;
+  "
+>
+  {text}
+</span>

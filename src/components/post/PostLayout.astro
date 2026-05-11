@@ -1,0 +1,195 @@
+---
+import { formatDate, readingTime } from '@/utils/date';
+import MoodBadge from '@/components/ui/MoodBadge.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'posts'>;
+}
+
+const { post } = Astro.props;
+const { data, body } = post;
+const rawContent = body ?? '';
+const readTime = readingTime(rawContent);
+
+// Category labels
+const categoryMap: Record<string, string> = {
+  poetry: '诗歌',
+  diary: '日记',
+  essay: '散文',
+  photography: '摄影',
+  music: '音乐',
+};
+---
+
+<article
+  class="post-article"
+  style="max-width: 720px; margin-inline: auto; padding: 2rem 1.5rem 6rem;"
+>
+  <!-- Top breathing space -->
+  <div style="min-height: 20vh;"></div>
+
+  <!-- Title -->
+  <h1
+    class="text-4xl md:text-5xl font-bold mb-6 m-0 leading-tight"
+    style="font-family: var(--font-serif); color: var(--text-primary);"
+  >
+    {data.title}
+  </h1>
+
+  <!-- Meta row -->
+  <div class="flex flex-wrap items-center gap-3 mb-4">
+    <time
+      class="text-sm"
+      style="color: var(--text-muted); font-family: var(--font-sans);"
+    >
+      {formatDate(data.date)}
+    </time>
+    <span style="color: var(--border-light);">·</span>
+    <MoodBadge mood={data.mood} />
+    <span style="color: var(--border-light);">·</span>
+    <span
+      class="text-sm"
+      style="color: var(--text-muted); font-family: var(--font-sans);"
+    >
+      {categoryMap[data.category] ?? data.category}
+    </span>
+    <span style="color: var(--border-light);">·</span>
+    <span
+      class="text-sm"
+      style="color: var(--text-muted); font-family: var(--font-sans);"
+    >
+      阅读约 {readTime} 分钟
+    </span>
+  </div>
+
+  <!-- Tags -->
+  {data.tags && data.tags.length > 0 && (
+    <div class="flex flex-wrap gap-2 mb-10">
+      {data.tags.map((tag) => (
+        <span
+          class="text-xs px-3 py-1 rounded-full"
+          style="
+            color: var(--text-secondary);
+            background: var(--bg-mist);
+            font-family: var(--font-sans);
+            border: 1px solid var(--border-light);
+          "
+        >
+          #{tag}
+        </span>
+      ))}
+    </div>
+  )}
+
+  <!-- Divider -->
+  <hr
+    class="my-10 border-0"
+    style="height: 1px; background: var(--border-light);"
+  />
+
+  <!-- Cover image -->
+  <div class="mb-12 overflow-hidden" style="max-width: 900px; margin-inline: auto;">
+    <img
+      src={data.image}
+      alt={data.imageAlt}
+      class="w-full h-auto"
+      loading="eager"
+      decoding="async"
+      style="display: block;"
+    />
+  </div>
+
+  <!-- Content -->
+  <div
+    class="post-content"
+    style="
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      line-height: 2;
+      color: var(--text-primary);
+    "
+  >
+    <slot />
+  </div>
+
+  <!-- Bottom divider -->
+  <hr
+    class="my-16 border-0"
+    style="height: 1px; background: var(--border-light);"
+  />
+
+  <!-- Tags (bottom) -->
+  {data.tags && data.tags.length > 0 && (
+    <div class="flex flex-wrap gap-2 mb-8">
+      {data.tags.map((tag) => (
+        <span
+          class="text-xs px-3 py-1 rounded-full"
+          style="
+            color: var(--text-secondary);
+            background: var(--bg-mist);
+            font-family: var(--font-sans);
+            border: 1px solid var(--border-light);
+          "
+        >
+          #{tag}
+        </span>
+      ))}
+    </div>
+  )}
+
+  <div class="text-center py-8">
+    <a
+      href="/posts/"
+      class="text-sm tracking-wider"
+      style="
+        color: var(--text-muted);
+        font-family: var(--font-sans);
+        text-decoration: none;
+      "
+    >
+      ← 返回文章列表
+    </a>
+  </div>
+</article>
+
+<style>
+  .post-content p {
+    margin-bottom: 1.8em;
+  }
+  .post-content blockquote {
+    margin: 2em 0;
+    padding: 1em 1.5em;
+    border-left: 2px solid var(--breeze-blue);
+    background: var(--bg-soft);
+    font-style: italic;
+    color: var(--text-secondary);
+  }
+  .post-content hr {
+    margin: 2em 0;
+    border: 0;
+    height: 1px;
+    background: var(--border-light);
+  }
+  .post-content ul, .post-content ol {
+    margin-bottom: 1.8em;
+    padding-left: 1.5em;
+  }
+  .post-content li {
+    margin-bottom: 0.5em;
+    color: var(--text-secondary);
+  }
+  .post-content strong {
+    color: var(--text-primary);
+  }
+  .post-content em {
+    color: var(--night-blue);
+    font-style: italic;
+  }
+  .post-content img {
+    max-width: 900px;
+    width: 100%;
+    margin: 2em auto;
+    display: block;
+  }
+</style>

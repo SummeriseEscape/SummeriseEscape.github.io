@@ -1,0 +1,84 @@
+---
+import ThemeToggle from '@/components/ui/ThemeToggle.astro';
+---
+
+<aside
+  class="fixed left-0 top-0 h-full flex flex-col items-start py-10 px-6 border-r z-50"
+  style="
+    width: var(--sidebar-width);
+    border-color: var(--border-light);
+    background: color-mix(in srgb, var(--bg-main) 85%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  "
+>
+  <!-- Logo -->
+  <a href="/" class="no-underline mb-16 block logo-area">
+    <div class="logo-area flex flex-col items-start gap-1">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="16" cy="16" r="14" stroke="var(--night-blue)" stroke-width="0.8" opacity="0.6"/>
+        <circle cx="16" cy="16" r="8" stroke="var(--breeze-blue)" stroke-width="0.6" opacity="0.4"/>
+        <circle cx="16" cy="12" r="1.2" fill="var(--deep-sky)" opacity="0.7"/>
+        <circle cx="12" cy="18" r="0.8" fill="var(--deep-sky)" opacity="0.5"/>
+        <circle cx="20" cy="17" r="0.6" fill="var(--deep-sky)" opacity="0.6"/>
+        <circle cx="15" cy="16" r="0.5" fill="var(--breeze-blue)" opacity="0.5"/>
+        <line x1="10" y1="14" x2="12" y2="16" stroke="var(--breeze-blue)" stroke-width="0.3" opacity="0.4"/>
+        <line x1="22" y1="14" x2="20" y2="17" stroke="var(--breeze-blue)" stroke-width="0.3" opacity="0.4"/>
+      </svg>
+      <span
+        class="text-lg font-bold tracking-widest"
+        style="
+          font-family: var(--font-serif);
+          color: var(--night-blue);
+          writing-mode: vertical-rl;
+          letter-spacing: 0.3em;
+        "
+      >
+        星风
+      </span>
+    </div>
+  </a>
+
+  <!-- Navigation -->
+  <nav class="flex flex-col items-start gap-8 flex-1" style="writing-mode: vertical-rl;">
+    <a
+      href="/"
+      class="text-sm tracking-[0.2em] no-underline py-1 relative transition-colors"
+      style="color: var(--text-secondary); font-family: var(--font-sans);"
+    >
+      首页
+    </a>
+    <a
+      href="/posts/"
+      class="text-sm tracking-[0.2em] no-underline py-1 relative transition-colors"
+      style="color: var(--text-secondary); font-family: var(--font-sans);"
+    >
+      文章
+    </a>
+    <a
+      href="/about"
+      class="text-sm tracking-[0.2em] no-underline py-1 relative transition-colors"
+      style="color: var(--text-secondary); font-family: var(--font-sans);"
+    >
+      关于
+    </a>
+  </nav>
+
+  <!-- Bottom controls -->
+  <div class="flex flex-col items-center gap-6 mt-auto">
+    <button
+      id="music-trigger"
+      class="bg-transparent border-none cursor-pointer p-1 transition-opacity"
+      style="color: var(--text-secondary);"
+      aria-label="打开音乐播放器"
+      title="音乐"
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+        <path d="M9 18V5l12-2v13"/>
+        <circle cx="6" cy="18" r="3"/>
+        <circle cx="18" cy="16" r="3"/>
+      </svg>
+    </button>
+    <ThemeToggle />
+  </div>
+</aside>

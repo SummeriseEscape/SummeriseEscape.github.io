@@ -1,0 +1,78 @@
+---
+import { formatDate } from '@/utils/date';
+import MoodBadge from '@/components/ui/MoodBadge.astro';
+
+interface Props {
+  title: string;
+  slug: string;
+  date: Date;
+  excerpt: string;
+  image: string;
+  imageAlt: string;
+  mood: string;
+}
+
+const { title, slug, date, excerpt, image, imageAlt, mood } = Astro.props;
+---
+
+<article class="post-card group">
+  <a href={`/posts/${slug}/`} class="block no-underline">
+    <div
+      class="post-card-inner overflow-hidden"
+      style="
+        background: var(--bg-soft);
+        border: 1px solid var(--border-light);
+        transition: transform var(--transition-slow), border-color var(--transition-medium);
+      "
+    >
+      <!-- Image -->
+      <div class="overflow-hidden" style="aspect-ratio: 4/3;">
+        <img
+          src={image}
+          alt={imageAlt}
+          loading="lazy"
+          decoding="async"
+          class="w-full h-full object-cover"
+          style="transition: transform var(--transition-slow);"
+        />
+      </div>
+
+      <!-- Content -->
+      <div class="p-5">
+        <div class="flex items-center justify-between mb-3 gap-2">
+          <time
+            class="text-xs tracking-wider"
+            style="color: var(--text-muted); font-family: var(--font-sans);"
+          >
+            {formatDate(date)}
+          </time>
+          <MoodBadge mood={mood} />
+        </div>
+
+        <h3
+          class="text-xl font-bold mb-2 m-0"
+          style="font-family: var(--font-serif); color: var(--text-primary);"
+        >
+          {title}
+        </h3>
+
+        <p
+          class="text-sm m-0 line-clamp-1"
+          style="color: var(--text-secondary); line-height: 1.6;"
+        >
+          {excerpt}
+        </p>
+      </div>
+    </div>
+  </a>
+</article>
+
+<style>
+  .post-card a:hover .post-card-inner {
+    transform: translateY(-6px);
+    border-color: var(--deep-sky);
+  }
+  .post-card a:hover img {
+    transform: scale(1.03);
+  }
+</style>

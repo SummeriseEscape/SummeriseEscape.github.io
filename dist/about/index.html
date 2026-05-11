@@ -1,0 +1,90 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Open Graph --><meta property="og:title" content="关于 — 星风"><meta property="og:description" content="一个拥有呼吸感与情绪氛围的数字空间。"><meta property="og:type" content="website"><meta property="og:image" content="https://starrybreeze.github.io/og-image.svg"><meta property="og:site_name" content="星风"><!-- Twitter --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="关于 — 星风"><meta name="twitter:description" content="一个拥有呼吸感与情绪氛围的数字空间。"><meta name="twitter:image" content="https://starrybreeze.github.io/og-image.svg"><!-- Standard --><meta name="description" content="一个拥有呼吸感与情绪氛围的数字空间。"><link rel="alternate" type="application/rss+xml" title="星风 RSS" href="https://starrybreeze.github.io/rss.xml"><title>关于 — 星风</title><script>
+      (function () {
+        const stored = localStorage.getItem('theme');
+        const theme = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script><link rel="stylesheet" href="/_astro/about.CnlYlsCX.css"></head> <body> <div class="page-wrapper"> <aside class="fixed left-0 top-0 h-full flex flex-col items-start py-10 px-6 border-r z-50" style="
+    width: var(--sidebar-width);
+    border-color: var(--border-light);
+    background: color-mix(in srgb, var(--bg-main) 85%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  "> <!-- Logo --> <a href="/" class="no-underline mb-16 block logo-area"> <div class="logo-area flex flex-col items-start gap-1"> <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"> <circle cx="16" cy="16" r="14" stroke="var(--night-blue)" stroke-width="0.8" opacity="0.6"></circle> <circle cx="16" cy="16" r="8" stroke="var(--breeze-blue)" stroke-width="0.6" opacity="0.4"></circle> <circle cx="16" cy="12" r="1.2" fill="var(--deep-sky)" opacity="0.7"></circle> <circle cx="12" cy="18" r="0.8" fill="var(--deep-sky)" opacity="0.5"></circle> <circle cx="20" cy="17" r="0.6" fill="var(--deep-sky)" opacity="0.6"></circle> <circle cx="15" cy="16" r="0.5" fill="var(--breeze-blue)" opacity="0.5"></circle> <line x1="10" y1="14" x2="12" y2="16" stroke="var(--breeze-blue)" stroke-width="0.3" opacity="0.4"></line> <line x1="22" y1="14" x2="20" y2="17" stroke="var(--breeze-blue)" stroke-width="0.3" opacity="0.4"></line> </svg> <span class="text-lg font-bold tracking-widest" style="
+          font-family: var(--font-serif);
+          color: var(--night-blue);
+          writing-mode: vertical-rl;
+          letter-spacing: 0.3em;
+        ">
+星风
+</span> </div> </a> <!-- Navigation --> <nav class="flex flex-col items-start gap-8 flex-1" style="writing-mode: vertical-rl;"> <a href="/" class="text-sm tracking-[0.2em] no-underline py-1 relative transition-colors" style="color: var(--text-secondary); font-family: var(--font-sans);">
+首页
+</a> <a href="/posts/" class="text-sm tracking-[0.2em] no-underline py-1 relative transition-colors" style="color: var(--text-secondary); font-family: var(--font-sans);">
+文章
+</a> <a href="/about" class="text-sm tracking-[0.2em] no-underline py-1 relative transition-colors" style="color: var(--text-secondary); font-family: var(--font-sans);">
+关于
+</a> </nav> <!-- Bottom controls --> <div class="flex flex-col items-center gap-6 mt-auto"> <button id="music-trigger" class="bg-transparent border-none cursor-pointer p-1 transition-opacity" style="color: var(--text-secondary);" aria-label="打开音乐播放器" title="音乐"> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"> <path d="M9 18V5l12-2v13"></path> <circle cx="6" cy="18" r="3"></circle> <circle cx="18" cy="16" r="3"></circle> </svg> </button> <button id="theme-toggle" class="bg-transparent border-none cursor-pointer p-1 transition-transform duration-500" style="color: var(--text-secondary);" aria-label="切换深色模式" title="切换深色模式"> <!-- Sun icon --> <svg id="theme-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"> <circle cx="12" cy="12" r="5"></circle> <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path> </svg> <!-- Moon icon --> <svg id="theme-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" style="display:none;"> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path> </svg> </button> <script type="module">const o=document.getElementById("theme-toggle"),m=document.getElementById("theme-sun"),d=document.getElementById("theme-moon"),e=document.documentElement;function n(){const t=e.getAttribute("data-theme")==="dark";m.style.display=t?"none":"block",d.style.display=t?"block":"none"}n();o?.addEventListener("click",()=>{const t=e.getAttribute("data-theme")==="dark"?"light":"dark";e.setAttribute("data-theme",t),localStorage.setItem("theme",t),n()});</script> </div> </aside> <main class="main-content">  <div style="max-width: 720px; margin-inline: auto; padding: 6rem 2rem 4rem; position: relative;"> <!-- Decorative elements --> <div class="geometric-circle absolute rounded-full pointer-events-none" style="width:80px;height:80px;top:5%;left:-10%;right:auto;bottom:auto;background:radial-gradient(circle at 40% 40%, var(--breeze-blue)22, var(--breeze-blue)08);border:1px solid var(--breeze-blue)18;animation:float 7s ease-in-out 0s infinite;filter:none;z-index:1"></div> <div class="geometric-circle absolute rounded-full pointer-events-none" style="width:50px;height:50px;top:20%;left:auto;right:-5%;bottom:auto;background:radial-gradient(circle at 40% 40%, var(--summer-pink)22, var(--summer-pink)08);border:1px solid var(--summer-pink)18;animation:float 6s ease-in-out 1.2s infinite;filter:none;z-index:1"></div> <!-- Profile card --> <div class="mb-16 p-10" style="
+        background: var(--bg-soft);
+        border: 1px solid var(--border-light);
+        position: relative;
+        overflow: hidden;
+      "> <!-- Dot grid decoration inside card --> <div class="absolute inset-0 opacity-30 pointer-events-none"> <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"> <defs> <pattern id="about-dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"> <circle cx="10" cy="10" r="0.5" fill="var(--text-muted)" opacity="0.3"></circle> </pattern> </defs> <rect width="100%" height="100%" fill="url(#about-dots)"></rect> </svg> </div> <!-- Avatar placeholder --> <div class="relative flex flex-col md:flex-row items-start gap-8"> <div class="shrink-0 flex items-center justify-center" style="
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--breeze-blue)33, var(--dust-purple)33);
+            border: 1px solid var(--border-light);
+          "> <svg width="40" height="40" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"> <circle cx="12" cy="10" r="3" stroke="var(--night-blue)" stroke-width="1"></circle> <path d="M5 26c0-4 3.5-6 7-6s7 2 7 6" stroke="var(--night-blue)" stroke-width="1"></path> <path d="M20 14c3 0 5 2 5 5s-2 5-5 5" stroke="var(--breeze-blue)" stroke-width="0.8"></path> </svg> </div> <div class="relative"> <h1 class="text-4xl font-bold mb-2" style="font-family: var(--font-serif); color: var(--text-primary);">
+Starry Breeze
+</h1> <p class="text-sm tracking-wider mb-4" style="color: var(--text-muted); font-family: var(--font-sans);">
+数字诗集 · 情绪记录者 · 星空观察者
+</p> <hr style="width: 40px; border: none; height: 1px; background: var(--border-light); margin: 1rem 0;"> </div> </div> </div> <!-- Self introduction --> <section class="mb-16"> <h2 class="text-xl font-bold mb-6 tracking-wider" style="font-family: var(--font-sans); color: var(--text-primary); letter-spacing: 0.1em;">
+关于
+</h2> <div style="font-family: var(--font-serif); color: var(--text-secondary); line-height: 2; font-size: 1.05rem;"> <p>
+这只是一个安静的数字空间，用来存放一些文字、一些夜晚、一些被风吹散的念头。
+</p> <p>
+我相信文字应该像风一样自由，像星辰一样安静。
+          这里没有信息焦虑，没有热搜，没有需要追赶的东西。
+          你可以在任何时刻来到这里，像走进一间夏夜里亮着灯的房间，坐下来，听一首歌，读一段话。
+</p> <p>
+所有的文章都是写给未来自己的信。
+          如果你碰巧读到，希望能为你的这个夜晚带来一点宁静。
+</p> </div> </section> <!-- Social links --> <section> <h2 class="text-xl font-bold mb-6 tracking-wider" style="font-family: var(--font-sans); color: var(--text-primary); letter-spacing: 0.1em;">
+链接
+</h2> <div class="flex flex-wrap gap-6"> <a href="https://github.com/starrybreeze" class="text-sm no-underline transition-colors duration-500" style="color: var(--text-secondary); font-family: var(--font-sans);">
+GitHub
+</a> <a href="https://twitter.com/" class="text-sm no-underline transition-colors duration-500" style="color: var(--text-secondary); font-family: var(--font-sans);">
+Twitter
+</a> <a href="/rss.xml" class="text-sm no-underline transition-colors duration-500" style="color: var(--text-secondary); font-family: var(--font-sans);">
+RSS
+</a> <a href="mailto:hello@example.com" class="text-sm no-underline transition-colors duration-500" style="color: var(--text-secondary); font-family: var(--font-sans);">
+Email
+</a> </div> </section> </div>  <footer class="py-16 text-center" style="border-top: 1px solid var(--border-light);"> <p class="text-xs tracking-widest uppercase m-0" style="color: var(--text-muted); font-family: var(--font-sans);">
+&copy; 2026 Starry Breeze
+<span class="mx-2" style="color: var(--border-light);">·</span>
+风吹过夏夜星辰
+</p> </footer> </main> </div> <!-- Music player panel (hidden by default) --><div id="music-player" class="fixed z-50 opacity-0 pointer-events-none translate-y-4" style="
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 340px;
+    padding: 1.25rem;
+    background: color-mix(in srgb, var(--bg-main) 88%, transparent);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-light);
+    transition: opacity var(--transition-medium), transform var(--transition-medium);
+    font-family: var(--font-sans);
+  "> <div class="flex items-center justify-between mb-3"> <span class="text-xs tracking-[0.2em] uppercase" style="color: var(--text-muted);">
+音乐
+</span> <button id="music-close" class="bg-transparent border-none cursor-pointer p-1" style="color: var(--text-muted);" aria-label="关闭音乐播放器"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"> <path d="M18 6L6 18M6 6l12 12"></path> </svg> </button> </div> <!-- Track info --> <div class="text-center py-2 mb-3" style="border-top: 1px solid var(--border-soft); border-bottom: 1px solid var(--border-soft);"> <p id="track-name" class="text-sm font-medium m-0 mb-0.5" style="color: var(--text-primary);">
+夏夜之风
+</p> <p id="track-duration" class="text-xs m-0" style="color: var(--text-muted);">
+03:42
+</p> </div> <!-- Controls --> <div class="flex items-center justify-center gap-5"> <button id="btn-prev" class="bg-transparent border-none cursor-pointer p-1 transition-opacity hover:opacity-70" style="color: var(--text-secondary);" aria-label="上一曲"> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"> <polygon points="19 20 9 12 19 4 19 20"></polygon> <line x1="5" y1="19" x2="5" y2="5"></line> </svg> </button> <button id="btn-play" class="bg-transparent border-none cursor-pointer p-2 transition-opacity hover:opacity-70" style="color: var(--text-primary);" aria-label="播放"> <svg id="icon-play" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"> <polygon points="5 3 19 12 5 21 5 3"></polygon> </svg> <svg id="icon-pause" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" style="display:none;"> <line x1="6" y1="4" x2="6" y2="20"></line> <line x1="18" y1="4" x2="18" y2="20"></line> </svg> </button> <button id="btn-next" class="bg-transparent border-none cursor-pointer p-1 transition-opacity hover:opacity-70" style="color: var(--text-secondary);" aria-label="下一曲"> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"> <polygon points="5 4 15 12 5 20 5 4"></polygon> <line x1="19" y1="5" x2="19" y2="19"></line> </svg> </button> </div> <!-- Volume --> <div class="flex items-center gap-2 mt-3"> <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.2"> <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon> <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path> </svg> <input id="volume-slider" type="range" min="0" max="100" value="60" class="flex-1" style="
+        -webkit-appearance: none;
+        appearance: none;
+        height: 1px;
+        background: var(--border-light);
+        outline: none;
+      "> </div> <!-- Audio element (silent placeholder) --> <audio id="audio-element" preload="metadata"> <!-- Replace src with actual audio files --> <source src="/audio/placeholder.mp3" type="audio/mpeg"> </audio> </div> <script type="module">const a=document.getElementById("music-player"),u=document.getElementById("music-trigger"),m=document.getElementById("music-close"),y=document.getElementById("btn-play"),p=document.getElementById("btn-prev"),E=document.getElementById("btn-next"),g=document.getElementById("icon-play"),v=document.getElementById("icon-pause"),k=document.getElementById("track-name"),f=document.getElementById("track-duration"),s=document.getElementById("volume-slider"),e=document.getElementById("audio-element"),c=[{name:"夏夜之风",src:"/audio/placeholder.mp3",duration:"03:42"},{name:"月光海",src:"/audio/placeholder.mp3",duration:"04:15"},{name:"星空列车",src:"/audio/placeholder.mp3",duration:"05:01"},{name:"晚霞",src:"/audio/placeholder.mp3",duration:"03:28"},{name:"雨后森林",src:"/audio/placeholder.mp3",duration:"04:50"}];let t=0,n=!1;function h(){a.style.opacity="1",a.style.pointerEvents="auto",a.style.transform="translateX(-50%) translateY(0)"}function r(){a.style.opacity="0",a.style.pointerEvents="none",a.style.transform="translateX(-50%) translateY(16px)"}function d(o){t=o;const l=c[o];k.textContent=l.name,f.textContent=l.duration,e.querySelector("source").src=l.src,e.load()}function B(){n?e.pause():e.play().catch(()=>{console.log("音频文件未配置，请在 public/audio/ 中添加 .mp3 文件")})}function i(){g.style.display=n?"none":"block",v.style.display=n?"block":"none"}e.addEventListener("play",()=>{n=!0,i()});e.addEventListener("pause",()=>{n=!1,i()});e.addEventListener("ended",()=>{t=(t+1)%c.length,d(t),e.play().catch(()=>{})});u?.addEventListener("click",h);m?.addEventListener("click",r);y.addEventListener("click",B);p.addEventListener("click",()=>{t=(t-1+c.length)%c.length,d(t),n&&e.play().catch(()=>{})});E.addEventListener("click",()=>{t=(t+1)%c.length,d(t),n&&e.play().catch(()=>{})});s.addEventListener("input",()=>{e.volume=Number(s.value)/100});document.addEventListener("keydown",o=>{o.key==="Escape"&&r()});e.volume=.6;</script> <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.C1WrXC67.js"></script> </body> </html>

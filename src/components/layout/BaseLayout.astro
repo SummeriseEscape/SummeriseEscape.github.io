@@ -1,0 +1,56 @@
+---
+import '@/styles/global.css';
+import '@/styles/typography.css';
+import '@/styles/animations.css';
+import SEO from '@/components/ui/SEO.astro';
+import Sidebar from '@/components/layout/Sidebar.astro';
+import Footer from '@/components/layout/Footer.astro';
+import MusicPlayer from '@/components/ui/MusicPlayer.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const { title, description, image } = Astro.props;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <SEO title={title} description={description} image={image} />
+    <title>{title ? `${title} — 星风` : '星风 — 风吹过夏夜星辰'}</title>
+    <script is:inline>
+      (function () {
+        const stored = localStorage.getItem('theme');
+        const theme = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="page-wrapper">
+      <Sidebar />
+      <main class="main-content">
+        <slot />
+        <Footer />
+      </main>
+    </div>
+    <MusicPlayer />
+    <script>
+      import { initSmoothScroll } from '@/animations/smoothScroll';
+      import { initEntranceAnimations } from '@/animations/entrance';
+      import { initFloatingAnimations } from '@/animations/floating';
+
+      initSmoothScroll();
+      document.addEventListener('DOMContentLoaded', () => {
+        initEntranceAnimations();
+        initFloatingAnimations();
+      });
+    </script>
+  </body>
+</html>

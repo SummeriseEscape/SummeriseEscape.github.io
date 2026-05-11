@@ -1,0 +1,39 @@
+<button
+  id="theme-toggle"
+  class="bg-transparent border-none cursor-pointer p-1 transition-transform duration-500"
+  style="color: var(--text-secondary);"
+  aria-label="切换深色模式"
+  title="切换深色模式"
+>
+  <!-- Sun icon -->
+  <svg id="theme-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+    <circle cx="12" cy="12" r="5"/>
+    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+  </svg>
+  <!-- Moon icon -->
+  <svg id="theme-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" style="display:none;">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+  </svg>
+</button>
+
+<script>
+  const btn = document.getElementById('theme-toggle');
+  const sun = document.getElementById('theme-sun');
+  const moon = document.getElementById('theme-moon');
+  const html = document.documentElement;
+
+  function updateIcon() {
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    sun!.style.display = isDark ? 'none' : 'block';
+    moon!.style.display = isDark ? 'block' : 'none';
+  }
+
+  updateIcon();
+
+  btn?.addEventListener('click', () => {
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    updateIcon();
+  });
+</script>

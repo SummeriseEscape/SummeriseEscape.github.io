@@ -1,0 +1,90 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/components/layout/BaseLayout.astro';
+import PostCard from '@/components/post/PostCard.astro';
+
+const allPosts = await getCollection('posts', ({ data }) => !data.draft);
+const sorted = allPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const categories = [
+  { key: 'all', label: '全部' },
+  { key: 'poetry', label: '诗歌' },
+  { key: 'diary', label: '日记' },
+  { key: 'essay', label: '散文' },
+  { key: 'photography', label: '摄影' },
+  { key: 'music', label: '音乐' },
+];
+
+// Read category from query string (client-side filtering handled by script)
+const selected = Astro.url.searchParams.get('category') || 'all';
+const filtered = selected === 'all' ? sorted : sorted.filter((p) => p.data.category === selected);
+---
+
+<BaseLayout title="文章">
+  <div
+    class="posts-page"
+    style="max-width: 1000px; margin-inline: auto; padding: 6rem 2rem 4rem;"
+  >
+    <!-- Header -->
+    <h1
+      class="text-4xl md:text-5xl font-bold mb-3"
+      style="font-family: var(--font-serif); color: var(--text-primary);"
+    >
+      文章
+    </h1>
+    <p
+      class="text-base mb-10"
+      style="color: var(--text-secondary); font-family: var(--font-serif); font-style: italic;"
+    >
+      所有写成文字的夜晚
+    </p>
+
+    <!-- Category filters -->
+    <div class="flex flex-wrap gap-3 mb-12" id="category-filters">
+      {categories.map((cat) => (
+        <a
+          href={`/posts/${cat.key === 'all' ? '' : `?category=${cat.key}`}`}
+          class="text-sm px-4 py-1.5 rounded-full no-underline transition-colors duration-500"
+          data-category={cat.key}
+          style={`
+            font-family: var(--font-sans);
+            color: ${cat.key === selected ? 'var(--bg-main)' : 'var(--text-secondary)'};
+            background: ${cat.key === selected ? 'var(--night-blue)' : 'var(--bg-soft)'};
+            border: 1px solid ${cat.key === selected ? 'var(--night-blue)' : 'var(--border-light)'};
+          `}
+        >
+          {cat.label}
+        </a>
+      ))}
+    </div>
+
+    <!-- Post grid -->
+    {filtered.length > 0 ? (
+      <div
+        style="
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+          gap: 2rem;
+        "
+      >
+        {filtered.map((post) => (
+          <PostCard
+            title={post.data.title}
+            slug={post.id.replace(/\.(mdx|md)$/, '')}
+            date={post.data.date}
+            excerpt={post.data.excerpt}
+            image={post.data.image}
+            imageAlt={post.data.imageAlt}
+            mood={post.data.mood}
+          />
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-20">
+        <p style="color: var(--text-muted); font-family: var(--font-sans);">
+          该分类下暂无文章
+        </p>
+      </div>
+    )}
+  </div>
+</BaseLayout>

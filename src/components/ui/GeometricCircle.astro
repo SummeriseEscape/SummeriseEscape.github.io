@@ -1,0 +1,42 @@
+---
+interface Props {
+  size?: number;
+  top?: string;
+  left?: string;
+  right?: string;
+  bottom?: string;
+  color?: string;
+  delay?: number;
+  duration?: number;
+  blur?: number;
+}
+
+const {
+  size = 120,
+  top,
+  left,
+  right,
+  bottom,
+  color = 'var(--breeze-blue)',
+  delay = 0,
+  duration = 7,
+  blur = 0,
+} = Astro.props;
+---
+
+<div
+  class="geometric-circle absolute rounded-full pointer-events-none"
+  style={{
+    width: `${size}px`,
+    height: `${size}px`,
+    top: top ?? 'auto',
+    left: left ?? 'auto',
+    right: right ?? 'auto',
+    bottom: bottom ?? 'auto',
+    background: `radial-gradient(circle at 40% 40%, ${color}22, ${color}08)`,
+    border: `1px solid ${color}18`,
+    animation: `float ${duration}s ease-in-out ${delay}s infinite`,
+    filter: blur > 0 ? `blur(${blur}px)` : 'none',
+    zIndex: 1,
+  }}
+></div>

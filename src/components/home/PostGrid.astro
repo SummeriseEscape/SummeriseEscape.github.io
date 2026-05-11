@@ -1,0 +1,54 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import PostCard from '@/components/post/PostCard.astro';
+
+interface Props {
+  posts: CollectionEntry<'posts'>[];
+}
+
+const { posts } = Astro.props;
+---
+
+<section
+  class="post-grid-wrapper px-8 py-24"
+  style="max-width: 1200px; margin-inline: auto;"
+>
+  <div class="flex items-center gap-4 mb-12">
+    <div style="width: 24px; height: 1px; background: var(--border-light);"></div>
+    <span
+      class="text-xs tracking-[0.3em] uppercase"
+      style="color: var(--text-muted); font-family: var(--font-sans);"
+    >
+      文章
+    </span>
+  </div>
+
+  <div
+    class="post-grid"
+    style="
+      display: grid;
+      grid-template-columns: 1fr 0.8fr 1.2fr;
+      gap: 2rem;
+    "
+  >
+    {posts.map((post) => (
+      <PostCard
+        title={post.data.title}
+        slug={post.id.replace(/\.(mdx|md)$/, '')}
+        date={post.data.date}
+        excerpt={post.data.excerpt}
+        image={post.data.image}
+        imageAlt={post.data.imageAlt}
+        mood={post.data.mood}
+      />
+    ))}
+  </div>
+
+  {posts.length === 0 && (
+    <div class="text-center py-20">
+      <p style="color: var(--text-muted); font-family: var(--font-sans);">
+        暂无文章。在 <code>src/content/posts/</code> 中添加你的第一篇 .mdx 文件。
+      </p>
+    </div>
+  )}
+</section>
