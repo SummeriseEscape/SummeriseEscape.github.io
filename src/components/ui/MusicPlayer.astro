@@ -127,21 +127,22 @@
 </div>
 
 <script>
-  const player = document.getElementById('music-player')!;
-  const trigger = document.getElementById('music-trigger');
-  const closeBtn = document.getElementById('music-close');
-  const btnPlay = document.getElementById('btn-play')!;
-  const btnPrev = document.getElementById('btn-prev')!;
-  const btnNext = document.getElementById('btn-next')!;
-  const iconPlay = document.getElementById('icon-play')!;
-  const iconPause = document.getElementById('icon-pause')!;
-  const trackName = document.getElementById('track-name')!;
-  const trackDuration = document.getElementById('track-duration')!;
-  const volumeSlider = document.getElementById('volume-slider') as HTMLInputElement;
-  const audio = document.getElementById('audio-element') as HTMLAudioElement;
+  (() => {
+    const player = document.getElementById('music-player')!;
+    const trigger = document.getElementById('music-trigger');
+    const closeBtn = document.getElementById('music-close');
+    const btnPlay = document.getElementById('btn-play')!;
+    const btnPrev = document.getElementById('btn-prev')!;
+    const btnNext = document.getElementById('btn-next')!;
+    const iconPlay = document.getElementById('icon-play')!;
+    const iconPause = document.getElementById('icon-pause')!;
+    const trackName = document.getElementById('track-name')!;
+    const trackDuration = document.getElementById('track-duration')!;
+    const volumeSlider = document.getElementById('volume-slider') as HTMLInputElement;
+    const audio = document.getElementById('audio-element') as HTMLAudioElement;
 
-  // Playlist (silent placeholders — replace with real audio)
-  const playlist = [
+    // Playlist (silent placeholders — replace with real audio)
+    const playlist = [
     { name: '夏夜之风', src: '/audio/placeholder.mp3', duration: '03:42' },
     { name: '月光海', src: '/audio/placeholder.mp3', duration: '04:15' },
     { name: '星空列车', src: '/audio/placeholder.mp3', duration: '05:01' },
@@ -204,6 +205,7 @@
     if (e.key === 'Escape') close();
   });
 
-  // Initial volume
-  audio.volume = 0.6;
+    // Initial volume
+    audio.volume = 0.6;
+  })();
 </script>
