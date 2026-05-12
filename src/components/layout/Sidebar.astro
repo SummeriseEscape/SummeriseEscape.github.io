@@ -3,7 +3,7 @@ import ThemeToggle from '@/components/ui/ThemeToggle.astro';
 ---
 
 <aside
-  class="fixed left-0 top-0 h-full flex flex-col items-start py-10 px-6 border-r z-50"
+  class="fixed left-0 top-0 h-full flex flex-col items-start py-10 px-6 border-r z-50 construct-corner"
   style="
     width: var(--sidebar-width);
     border-color: var(--border-light);
@@ -12,9 +12,14 @@ import ThemeToggle from '@/components/ui/ThemeToggle.astro';
     -webkit-backdrop-filter: blur(12px);
   "
 >
+  <!-- Corner brackets -->
+  <div class="sidebar-corner-tl" aria-hidden="true"></div>
+  <div class="sidebar-corner-br" aria-hidden="true"></div>
+
   <!-- Logo -->
-  <a href="/" class="no-underline mb-16 block logo-area">
+  <a href="/" class="no-underline mb-16 block logo-area relative">
     <div class="logo-area flex flex-col items-start gap-1">
+      <div class="logo-frame" aria-hidden="true"></div>
       <svg width="40" height="40" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
         <circle cx="16" cy="16" r="14" stroke="var(--night-blue)" stroke-width="0.8" opacity="0.6"/>
         <circle cx="16" cy="16" r="8" stroke="var(--breeze-blue)" stroke-width="0.6" opacity="0.4"/>
@@ -24,6 +29,8 @@ import ThemeToggle from '@/components/ui/ThemeToggle.astro';
         <circle cx="15" cy="16" r="0.5" fill="var(--breeze-blue)" opacity="0.5"/>
         <line x1="10" y1="14" x2="12" y2="16" stroke="var(--breeze-blue)" stroke-width="0.3" opacity="0.4"/>
         <line x1="22" y1="14" x2="20" y2="17" stroke="var(--breeze-blue)" stroke-width="0.3" opacity="0.4"/>
+        <line x1="12" y1="14" x2="10" y2="18" stroke="var(--breeze-blue)" stroke-width="0.3" opacity="0.3"/>
+        <line x1="20" y1="14" x2="22" y2="17" stroke="var(--breeze-blue)" stroke-width="0.3" opacity="0.3"/>
       </svg>
       <span
         class="text-xl font-bold tracking-widest"
@@ -64,6 +71,9 @@ import ThemeToggle from '@/components/ui/ThemeToggle.astro';
     </a>
   </nav>
 
+  <!-- Diagonal accent -->
+  <div class="sidebar-diagonal" aria-hidden="true"></div>
+
   <!-- Bottom controls -->
   <div class="flex flex-col items-center gap-6 mt-auto">
     <button
@@ -89,5 +99,96 @@ import ThemeToggle from '@/components/ui/ThemeToggle.astro';
   }
   .nav-link:hover {
     color: var(--deep-sky);
+  }
+
+  /* Vertical accent bar on hover */
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    right: -8px;
+    top: 0;
+    width: 2px;
+    height: 0%;
+    background: var(--deep-sky);
+    transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0.6;
+  }
+  .nav-link:hover::after {
+    height: 100%;
+  }
+
+  /* Slash prefix on hover */
+  .nav-link::before {
+    content: '//';
+    position: absolute;
+    left: -20px;
+    top: 0;
+    opacity: 0;
+    font-size: 0.55rem;
+    color: var(--breeze-blue);
+    font-family: var(--font-sans);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    transform: translateX(-4px);
+  }
+  .nav-link:hover::before {
+    opacity: 0.5;
+    transform: translateX(0);
+  }
+
+  /* Diagonal accent at bottom */
+  .sidebar-diagonal {
+    position: absolute;
+    bottom: 80px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      var(--breeze-blue) 30%,
+      var(--deep-sky) 50%,
+      var(--breeze-blue) 70%,
+      transparent
+    );
+    transform: rotate(-5deg);
+    opacity: 0.15;
+  }
+
+  /* Corner brackets override (larger than default) */
+  .sidebar-corner-tl {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    width: 24px;
+    height: 24px;
+    border-top: 1px solid var(--breeze-blue);
+    border-left: 1px solid var(--breeze-blue);
+    opacity: 0.2;
+    pointer-events: none;
+  }
+
+  .sidebar-corner-br {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    width: 24px;
+    height: 24px;
+    border-bottom: 1px solid var(--breeze-blue);
+    border-right: 1px solid var(--breeze-blue);
+    opacity: 0.2;
+    pointer-events: none;
+  }
+
+  /* Logo frame */
+  .logo-frame {
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    right: -8px;
+    bottom: -8px;
+    border: 1px solid var(--border-light);
+    clip-path: polygon(8px 0%, 100% 0%, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0% 100%, 0% 8px);
+    opacity: 0.25;
+    pointer-events: none;
   }
 </style>

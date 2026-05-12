@@ -57,7 +57,7 @@ Pages use `<BaseLayout>` as a wrapper and slot their content into `<main class="
 
 **CSS**: Tailwind CSS 4 via `@tailwindcss/vite` (Vite plugin, not PostCSS). The Tailwind import is in `global.css`. Inline `style` attributes on components use CSS variables extensively — prefer these over Tailwind utility classes when styling with design tokens.
 
-**Typography**: Google Fonts loaded in `typography.css` — Noto Serif SC (body), Inter + Space Grotesk (UI). `var(--font-serif)` and `var(--font-sans)` are the CSS font-family stacks.
+**Typography**: `@font-face` loaded from `public/fonts/` — 全字库正楷体 (TW Kai, body), Inter + Space Grotesk (UI). `var(--font-serif)` and `var(--font-sans)` are the CSS font-family stacks.
 
 **Sidebar**: Fixed left sidebar (200px) with vertical-rl text. On mobile (≤768px), sidebar collapses to a fixed top bar. `var(--sidebar-width)` drives the layout — set to 0 on mobile.
 

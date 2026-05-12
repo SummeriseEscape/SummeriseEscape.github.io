@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '@/components/layout/BaseLayout.astro';
 import PostCard from '@/components/post/PostCard.astro';
+import ConstructDivider from '@/components/ui/ConstructDivider.astro';
 
 const allPosts = await getCollection('posts', ({ data }) => !data.draft);
 const sorted = allPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
@@ -39,23 +40,30 @@ const filtered = selected === 'all' ? sorted : sorted.filter((p) => p.data.categ
     </p>
 
     <!-- Category filters -->
-    <div class="flex flex-wrap gap-3 mb-12" id="category-filters">
+    <div class="flex flex-wrap gap-4 mb-14" id="category-filters">
       {categories.map((cat) => (
         <a
           href={`/posts/${cat.key === 'all' ? '' : `?category=${cat.key}`}`}
-          class="cat-link text-sm px-4 py-1.5 rounded-full no-underline transition-colors duration-500"
+          class="cat-link text-sm px-5 py-2.5 no-underline transition-all duration-500"
           data-category={cat.key}
           style={`
             font-family: var(--font-sans);
+            font-size: 0.9rem;
+            letter-spacing: 0.15em;
             color: ${cat.key === selected ? 'var(--bg-main)' : 'var(--text-secondary)'};
-            background: ${cat.key === selected ? 'var(--night-blue)' : 'var(--bg-soft)'};
+            background: ${cat.key === selected ? 'var(--night-blue)' : 'transparent'};
             border: 1px solid ${cat.key === selected ? 'var(--night-blue)' : 'var(--border-light)'};
+            opacity: 0;
+            transform: translateY(10px);
           `}
         >
-          {cat.label}
+          <span class="cat-label">{cat.label}</span>
+          {cat.key === selected && <span class="cat-active-accent" aria-hidden="true"></span>}
         </a>
       ))}
     </div>
+
+    <ConstructDivider variant="diamond" />
 
     <!-- Post grid -->
     <div
@@ -64,6 +72,7 @@ const filtered = selected === 'all' ? sorted : sorted.filter((p) => p.data.categ
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         gap: 2rem;
+        margin-top: 3rem;
       "
     >
       {sorted.map((post) => (
@@ -95,7 +104,7 @@ const filtered = selected === 'all' ? sorted : sorted.filter((p) => p.data.categ
     const grid = document.getElementById('post-grid');
     const emptyMsg = document.getElementById('empty-message');
 
-    function getActiveStyle(key: string) {
+    function getActiveStyle() {
       return {
         color: 'var(--bg-main)',
         background: 'var(--night-blue)',
@@ -105,7 +114,7 @@ const filtered = selected === 'all' ? sorted : sorted.filter((p) => p.data.categ
     function getInactiveStyle() {
       return {
         color: 'var(--text-secondary)',
-        background: 'var(--bg-soft)',
+        background: 'transparent',
         borderColor: 'var(--border-light)',
       };
     }
@@ -118,23 +127,42 @@ const filtered = selected === 'all' ? sorted : sorted.filter((p) => p.data.categ
         if (match) count++;
       });
 
-      // Toggle empty message
       if (grid && emptyMsg) {
         grid.style.display = count > 0 ? '' : 'none';
         (emptyMsg as HTMLElement).style.display = count === 0 ? '' : 'none';
       }
 
-      // Update active link style
       links.forEach((a) => {
         const isActive = a.dataset.category === cat;
-        const s = isActive ? getActiveStyle(cat) : getInactiveStyle();
+        const s = isActive ? getActiveStyle() : getInactiveStyle();
         a.style.color = s.color;
         a.style.background = s.background;
         a.style.borderColor = s.borderColor;
+
+        // Toggle active accent
+        const existing = a.querySelector('.cat-active-accent');
+        if (isActive && !existing) {
+          const accent = document.createElement('span');
+          accent.className = 'cat-active-accent';
+          accent.setAttribute('aria-hidden', 'true');
+          a.appendChild(accent);
+        } else if (!isActive && existing) {
+          existing.remove();
+        }
       });
     }
 
-    // Handle category link clicks — client-side filter, no page reload
+    // Stagger entrance for category links
+    const catLinks = document.querySelectorAll<HTMLElement>('.cat-link');
+    catLinks.forEach((link, i) => {
+      setTimeout(() => {
+        link.style.transition = 'opacity 0.5s ease, transform 0.5s ease, color 0.4s ease, background 0.4s ease, border-color 0.4s ease';
+        link.style.opacity = '1';
+        link.style.transform = 'translateY(0)';
+      }, 100 + i * 80);
+    });
+
+    // Handle category link clicks
     links.forEach((a) => {
       a.addEventListener('click', (e) => {
         e.preventDefault();
@@ -151,9 +179,8 @@ const filtered = selected === 'all' ? sorted : sorted.filter((p) => p.data.categ
       applyCategory(cat);
     });
 
-    // Initialize from URL on load (for non-JS SSR fallback, DOM already reflects correct state)
+    // Initialize from URL on load
     const initialCat = new URLSearchParams(location.search).get('category') || 'all';
-    // Only re-apply if the URL has a category (SSR rendered with ?category=)
     if (initialCat !== 'all') {
       applyCategory(initialCat);
     }

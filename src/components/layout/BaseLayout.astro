@@ -2,6 +2,7 @@
 import '@/styles/global.css';
 import '@/styles/typography.css';
 import '@/styles/animations.css';
+import '@/styles/constructivist.css';
 import SEO from '@/components/ui/SEO.astro';
 import Sidebar from '@/components/layout/Sidebar.astro';
 import Footer from '@/components/layout/Footer.astro';
@@ -45,8 +46,10 @@ const { title, description, image } = Astro.props;
       import { initSmoothScroll } from '@/animations/smoothScroll';
       import { initEntranceAnimations } from '@/animations/entrance';
       import { initFloatingAnimations } from '@/animations/floating';
+      import { initClickEffects } from '@/animations/interactions';
 
       initSmoothScroll();
+      initClickEffects();
       document.addEventListener('DOMContentLoaded', () => {
         initEntranceAnimations();
         initFloatingAnimations();

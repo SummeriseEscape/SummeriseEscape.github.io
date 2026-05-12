@@ -1,4 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700;900&family=Inter:wght@300;400;500&family=Space+Grotesk:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Serif+Display&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Serif+Display&display=swap');
 
-/* HarmonyOS Sans SC is a system font on HarmonyOS devices,
-   fallback to Inter + system sans-serif stack */
+/* 全字库正楷体 — local Kai font covering 3 Unicode planes */
+@font-face {
+  font-family: 'TW Kai';
+  src: url('/fonts/TW-Kai-98_1.ttf') format('truetype');
+  unicode-range: U+0000-FFFF;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TW Kai';
+  src: url('/fonts/TW-Kai-Ext-B-98_1.ttf') format('truetype');
+  unicode-range: U+20000-2FFFF;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TW Kai';
+  src: url('/fonts/TW-Kai-Plus-98_1.ttf') format('truetype');
+  unicode-range: U+F0000-FFFFF;
+  font-display: swap;
+}

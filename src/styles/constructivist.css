@@ -1,0 +1,219 @@
+/* ========== Constructivist Accents ========== */
+
+/* Corner brackets — L-shaped markers at container corners */
+.construct-corner {
+  position: relative;
+}
+.construct-corner::before,
+.construct-corner::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-color: var(--breeze-blue);
+  border-style: solid;
+  opacity: 0.25;
+  pointer-events: none;
+  z-index: 1;
+}
+.construct-corner::before {
+  top: 0;
+  left: 0;
+  border-top-width: 1px;
+  border-left-width: 1px;
+}
+.construct-corner::after {
+  bottom: 0;
+  right: 0;
+  border-bottom-width: 1px;
+  border-right-width: 1px;
+}
+
+.construct-corner-alt::before {
+  top: 0;
+  right: 0;
+  border-top-width: 1px;
+  border-right-width: 1px;
+  left: auto;
+}
+.construct-corner-alt::after {
+  bottom: 0;
+  left: 0;
+  border-bottom-width: 1px;
+  border-left-width: 1px;
+  right: auto;
+}
+
+/* Diagonal accent sweep */
+.construct-diagonal {
+  position: relative;
+  overflow: hidden;
+}
+.construct-diagonal::after {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 1px;
+  height: 140%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--breeze-blue) 20%,
+    var(--deep-sky) 80%,
+    transparent
+  );
+  transform: rotate(25deg);
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+/* Horizontal rule with diamond end-caps */
+hr.construct-hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--border-light) 15%,
+    var(--deep-sky) 50%,
+    var(--border-light) 85%,
+    transparent
+  );
+  position: relative;
+  margin: 2rem 0;
+}
+hr.construct-hr::before,
+hr.construct-hr::after {
+  content: '◆';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--breeze-blue);
+  font-size: 6px;
+  opacity: 0.35;
+}
+hr.construct-hr::before {
+  left: calc(15% - 3px);
+}
+hr.construct-hr::after {
+  right: calc(15% - 3px);
+}
+
+/* Clip-path cut-corner frame */
+.construct-frame {
+  position: relative;
+  border: 1px solid var(--border-light);
+  clip-path: polygon(
+    10px 0%, calc(100% - 10px) 0%, 100% 10px,
+    100% calc(100% - 10px), calc(100% - 10px) 100%,
+    10px 100%, 0% calc(100% - 10px), 0% 10px
+  );
+}
+
+/* Overlay decorative shapes */
+.construct-overlay-circle {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid var(--breeze-blue);
+  opacity: 0.06;
+  pointer-events: none;
+  z-index: 0;
+}
+.construct-overlay-rect {
+  position: absolute;
+  border: 1px solid var(--dust-purple);
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ========== Interactive Effects ========== */
+
+/* Ripple on click */
+.ripple-effect {
+  position: fixed;
+  border-radius: 50%;
+  background: var(--breeze-blue);
+  pointer-events: none;
+  z-index: 9999;
+  animation: ripple-anim 0.6s ease-out forwards;
+}
+
+@keyframes ripple-anim {
+  from {
+    transform: scale(0);
+    opacity: 0.15;
+  }
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* Button press feedback */
+button,
+.btn {
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+button:active,
+.btn:active {
+  transform: scale(0.95);
+}
+
+/* Theme toggle rotation */
+#theme-toggle svg {
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+#theme-toggle:active svg {
+  transform: rotate(45deg);
+}
+
+/* ========== Category Filter Styles ========== */
+
+.cat-link {
+  position: relative;
+  min-width: 80px;
+  text-align: center;
+  clip-path: polygon(
+    6px 0%, calc(100% - 6px) 0%, 100% 6px,
+    100% calc(100% - 6px), calc(100% - 6px) 100%,
+    6px 100%, 0% calc(100% - 6px), 0% 6px
+  );
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.cat-link:hover {
+  transform: translateY(-3px);
+}
+.cat-link:active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* Hover corner bracket */
+.cat-link::before {
+  content: '';
+  position: absolute;
+  bottom: 3px;
+  left: 3px;
+  width: 8px;
+  height: 8px;
+  border-bottom: 1px solid var(--deep-sky);
+  border-left: 1px solid var(--deep-sky);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.cat-link:hover::before {
+  opacity: 0.6;
+}
+
+/* Active state corner accent */
+.cat-active-accent {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  border-top: 2px solid var(--breeze-blue);
+  border-right: 2px solid var(--breeze-blue);
+  opacity: 0.5;
+}

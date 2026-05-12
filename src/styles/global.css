@@ -21,7 +21,7 @@
   --border-light: rgba(49, 67, 90, 0.08);
   --border-soft: rgba(49, 67, 90, 0.04);
 
-  --font-serif: 'Noto Serif SC', 'Cormorant Garamond', 'DM Serif Display', serif;
+  --font-serif: 'TW Kai', 'Cormorant Garamond', 'DM Serif Display', serif;
   --font-sans: 'HarmonyOS Sans SC', 'Inter', 'Space Grotesk', sans-serif;
 
   --transition-slow: 800ms cubic-bezier(0.4, 0, 0.2, 1);

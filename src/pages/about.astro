@@ -7,12 +7,12 @@ import GeometricCircle from '@/components/ui/GeometricCircle.astro';
   <div style="max-width: 720px; margin-inline: auto; padding: 6rem 2rem 4rem; position: relative;">
 
     <!-- Decorative elements -->
-    <GeometricCircle size={80} top="5%" left="-10%" color="var(--breeze-blue)" delay={0} duration={7} blur={0} />
-    <GeometricCircle size={50} top="20%" right="-5%" color="var(--summer-pink)" delay={1.2} duration={6} blur={0} />
+    <GeometricCircle size={80} top="5%" left="-10%" color="var(--breeze-blue)" delay={0} duration={7} shape="diamond" rotation={15} />
+    <GeometricCircle size={50} top="20%" right="-5%" color="var(--summer-pink)" delay={1.2} duration={6} shape="triangle" rotation={10} />
 
     <!-- Profile card -->
     <div
-      class="mb-16 p-10"
+      class="mb-16 p-10 construct-corner"
       style="
         background: var(--bg-soft);
         border: 1px solid var(--border-light);
@@ -31,6 +31,9 @@ import GeometricCircle from '@/components/ui/GeometricCircle.astro';
           <rect width="100%" height="100%" fill="url(#about-dots)" />
         </svg>
       </div>
+
+      <!-- Diagonal accent behind avatar -->
+      <div class="about-diagonal" aria-hidden="true"></div>
 
       <!-- Avatar placeholder -->
       <div class="relative flex flex-col md:flex-row items-start gap-8">
@@ -64,7 +67,7 @@ import GeometricCircle from '@/components/ui/GeometricCircle.astro';
           >
             数字诗集 · 记录 · 观察
           </p>
-          <hr style="width: 40px; border: none; height: 1px; background: var(--border-light); margin: 1rem 0;" />
+          <hr class="construct-hr" />
         </div>
       </div>
     </div>
@@ -135,3 +138,23 @@ import GeometricCircle from '@/components/ui/GeometricCircle.astro';
 
   </div>
 </BaseLayout>
+
+<style>
+  .about-diagonal {
+    position: absolute;
+    top: -20%;
+    right: -5%;
+    width: 1px;
+    height: 140%;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      var(--breeze-blue) 20%,
+      var(--deep-sky) 80%,
+      transparent
+    );
+    transform: rotate(15deg);
+    opacity: 0.1;
+    pointer-events: none;
+  }
+</style>

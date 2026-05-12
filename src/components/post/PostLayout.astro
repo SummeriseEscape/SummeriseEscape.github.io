@@ -23,7 +23,7 @@ const categoryMap: Record<string, string> = {
 ---
 
 <article
-  class="post-article"
+  class="post-article construct-corner"
   style="max-width: 720px; margin-inline: auto; padding: 2rem 1.5rem 6rem;"
 >
   <!-- Top breathing space -->
@@ -83,10 +83,7 @@ const categoryMap: Record<string, string> = {
   )}
 
   <!-- Divider -->
-  <hr
-    class="my-10 border-0"
-    style="height: 1px; background: var(--border-light);"
-  />
+  <hr class="construct-hr" />
 
   <!-- Cover image -->
   <div class="mb-12 overflow-hidden" style="max-width: 900px; margin-inline: auto;">
@@ -114,10 +111,7 @@ const categoryMap: Record<string, string> = {
   </div>
 
   <!-- Bottom divider -->
-  <hr
-    class="my-16 border-0"
-    style="height: 1px; background: var(--border-light);"
-  />
+  <hr class="construct-hr" />
 
   <!-- Tags (bottom) -->
   {data.tags && data.tags.length > 0 && (

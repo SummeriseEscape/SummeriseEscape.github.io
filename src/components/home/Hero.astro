@@ -6,7 +6,7 @@ import ScrollIndicator from '@/components/ui/ScrollIndicator.astro';
 ---
 
 <section
-  class="hero relative flex items-center justify-center overflow-hidden"
+  class="hero relative flex items-center justify-center overflow-hidden construct-diagonal"
   style="min-height: 100vh;"
 >
 
@@ -14,14 +14,14 @@ import ScrollIndicator from '@/components/ui/ScrollIndicator.astro';
   <Starfield />
 
   <!-- Geometric decorations -->
-  <GeometricCircle size={180} top="12%" left="8%" color="var(--breeze-blue)" delay={0} duration={7} blur={0}/>
-  <GeometricCircle size={90} top="25%" right="12%" color="var(--summer-pink)" delay={1.5} duration={6} blur={0}/>
-  <GeometricCircle size={140} bottom="20%" left="15%" color="var(--dust-purple)" delay={0.8} duration={8} blur={0}/>
-  <GeometricCircle size={60} top="60%" right="8%" color="var(--moon-beige)" delay={2.2} duration={5.5} blur={0}/>
-  <GeometricCircle size={100} bottom="30%" right="25%" color="var(--breeze-blue)" delay={3} duration={7.5} blur={0}/>
+  <GeometricCircle size={180} top="12%" left="8%" color="var(--breeze-blue)" delay={0} duration={7} />
+  <GeometricCircle size={90} top="25%" right="12%" color="var(--summer-pink)" delay={1.5} duration={6} shape="diamond" rotation={15} />
+  <GeometricCircle size={140} bottom="20%" left="15%" color="var(--dust-purple)" delay={0.8} duration={8} />
+  <GeometricCircle size={60} top="60%" right="8%" color="var(--moon-beige)" delay={2.2} duration={5.5} shape="triangle" rotation={10} />
+  <GeometricCircle size={100} bottom="30%" right="25%" color="var(--breeze-blue)" delay={3} duration={7.5} />
 
   <!-- Main content -->
-  <div class="relative text-center" style="z-index: 2;">
+  <div class="relative text-center construct-corner" style="z-index: 2;">
     <h1
       id="hero-title"
       class="font-bold m-0 tracking-wide"

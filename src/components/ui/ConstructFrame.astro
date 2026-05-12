@@ -1,0 +1,26 @@
+---
+interface Props {
+  variant?: 'corner' | 'full' | 'minimal';
+  class?: string;
+}
+
+const { variant = 'corner', class: className } = Astro.props;
+---
+
+{
+  variant === 'full' ? (
+    <div class:list={['construct-frame', className]}>
+      <slot />
+    </div>
+  ) : variant === 'minimal' ? (
+    <div class:list={['relative', className]}>
+      <slot />
+      <span class="absolute top-0 left-0 w-4 h-4 border-t border-l pointer-events-none" style="border-color: var(--breeze-blue); opacity: 0.2;" aria-hidden="true" />
+      <span class="absolute bottom-0 right-0 w-4 h-4 border-b border-r pointer-events-none" style="border-color: var(--breeze-blue); opacity: 0.2;" aria-hidden="true" />
+    </div>
+  ) : (
+    <div class:list={['construct-corner', className]}>
+      <slot />
+    </div>
+  )
+}

@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import PostCard from '@/components/post/PostCard.astro';
+import ConstructDivider from '@/components/ui/ConstructDivider.astro';
 
 interface Props {
   posts: CollectionEntry<'posts'>[];
@@ -13,7 +14,7 @@ const { posts } = Astro.props;
   class="post-grid-wrapper px-8 py-24"
   style="max-width: 1200px; margin-inline: auto;"
 >
-  <div class="flex items-center gap-4 mb-12">
+  <div class="flex items-center gap-4 mb-10">
     <div style="width: 24px; height: 1px; background: var(--border-light);"></div>
     <span
       class="text-xs tracking-[0.3em] uppercase"
@@ -23,25 +24,30 @@ const { posts } = Astro.props;
     </span>
   </div>
 
-  <div
-    class="post-grid"
-    style="
-      display: grid;
-      grid-template-columns: 1fr 0.8fr 1.2fr;
-      gap: 2rem;
-    "
-  >
-    {posts.map((post) => (
-      <PostCard
-        title={post.data.title}
-        slug={post.id.replace(/\.(mdx|md)$/, '')}
-        date={post.data.date}
-        excerpt={post.data.excerpt}
-        image={post.data.image}
-        imageAlt={post.data.imageAlt}
-        mood={post.data.mood}
-      />
-    ))}
+  <ConstructDivider variant="diamond" />
+
+  <div style="margin-top: 3rem;">
+    <div
+      class="post-grid construct-frame"
+      style="
+        display: grid;
+        grid-template-columns: 1fr 0.8fr 1.2fr;
+        gap: 2rem;
+        padding: 1.5rem;
+      "
+    >
+      {posts.map((post) => (
+        <PostCard
+          title={post.data.title}
+          slug={post.id.replace(/\.(mdx|md)$/, '')}
+          date={post.data.date}
+          excerpt={post.data.excerpt}
+          image={post.data.image}
+          imageAlt={post.data.imageAlt}
+          mood={post.data.mood}
+        />
+      ))}
+    </div>
   </div>
 
   {posts.length === 0 && (

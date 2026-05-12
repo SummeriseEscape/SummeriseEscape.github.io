@@ -9,6 +9,8 @@ interface Props {
   delay?: number;
   duration?: number;
   blur?: number;
+  shape?: 'circle' | 'triangle' | 'diamond' | 'rect';
+  rotation?: number;
 }
 
 const {
@@ -21,11 +23,27 @@ const {
   delay = 0,
   duration = 7,
   blur = 0,
+  shape = 'circle',
+  rotation = 0,
 } = Astro.props;
+
+const clipPaths: Record<string, string> = {
+  circle: 'none',
+  triangle: 'polygon(50% 0%, 0% 100%, 100% 100%)',
+  diamond: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
+  rect: 'none',
+};
+
+const borderRadii: Record<string, string> = {
+  circle: '50%',
+  triangle: '0',
+  diamond: '0',
+  rect: '2px',
+};
 ---
 
 <div
-  class="geometric-circle absolute rounded-full pointer-events-none"
+  class="geometric-circle absolute pointer-events-none"
   style={{
     width: `${size}px`,
     height: `${size}px`,
@@ -33,10 +51,13 @@ const {
     left: left ?? 'auto',
     right: right ?? 'auto',
     bottom: bottom ?? 'auto',
+    borderRadius: borderRadii[shape],
+    clipPath: clipPaths[shape],
     background: `radial-gradient(circle at 40% 40%, ${color}22, ${color}08)`,
     border: `1px solid ${color}18`,
     animation: `float ${duration}s ease-in-out ${delay}s infinite`,
     filter: blur > 0 ? `blur(${blur}px)` : 'none',
+    transform: rotation !== 0 ? `rotate(${rotation}deg)` : undefined,
     zIndex: 1,
   }}
 ></div>
