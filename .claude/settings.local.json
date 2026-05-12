@@ -20,7 +20,8 @@
       "Bash(cp \"D:/starry-breeze/全字库正楷体/TW-Kai-98_1.ttf\" \"D:/starry-breeze/全字库正楷体/TW-Kai-Ext-B-98_1.ttf\" \"D:/starry-breeze/全字库正楷体/TW-Kai-Plus-98_1.ttf\" \"D:/starry-breeze/public/fonts/\")",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4321)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4322)",
-      "Bash(rg \"TW Kai\" dist/ --include=\"*.css\" -l)"
+      "Bash(rg \"TW Kai\" dist/ --include=\"*.css\" -l)",
+      "Bash(xxd \"src/components/ui/MusicPlayer.astro\")"
     ]
   }
 }
