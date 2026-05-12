@@ -127,6 +127,8 @@
 
 <script>
   (() => {
+    const STORAGE_KEY = 'music-state';
+
     const player = document.getElementById('music-player')!;
     const trigger = document.getElementById('music-trigger');
     const closeBtn = document.getElementById('music-close');
@@ -140,74 +142,129 @@
     const volumeSlider = document.getElementById('volume-slider') as HTMLInputElement;
     const audio = document.getElementById('audio-element') as HTMLAudioElement;
 
-    // Playlist (silent placeholders — replace with real audio)
     const playlist = [
-    { name: '揪心的玩笑与漫长的白日梦', src: '/audio/万能青年旅店 - 揪心的玩笑与漫长的白日梦.flac', duration: '03:42' },
-    { name: '美好事物', src: '/audio/房东的猫 - 美好事物 (2017).flac', duration: '04:15' },
-    { name: '躺在凌晨五点半的海岸', src: '/audio/房东的猫 - 躺在凌晨五点半的海岸.flac', duration: '05:01' },
-    { name: '我从未到过长江南岸', src: '/audio/柠安 - 我从未到过长江南岸.flac', duration: '03:28' },
-    { name: '海盗船长2.0', src: '/audio/花粥,风子 - 海盗船长2.flac', duration: '04:50' },
-  ];
-  let currentTrack = 0;
-  let isPlaying = false;
+      { name: '揪心的玩笑与漫长的白日梦', src: '/audio/万能青年旅店 - 揪心的玩笑与漫长的白日梦.flac', duration: '03:42' },
+      { name: '美好事物', src: '/audio/房东的猫 - 美好事物 (2017).flac', duration: '04:15' },
+      { name: '躺在凌晨五点半的海岸', src: '/audio/房东的猫 - 躺在凌晨五点半的海岸.flac', duration: '05:01' },
+      { name: '我从未到过长江南岸', src: '/audio/柠安 - 我从未到过长江南岸.flac', duration: '03:28' },
+      { name: '海盗船长2.0', src: '/audio/花粥,风子 - 海盗船长2.flac', duration: '04:50' },
+    ];
 
-  // Load the first track on init
-  loadTrack(0);
+    let currentTrack = 0;
+    let isPlaying = false;
 
-  function open() {
-    player.style.opacity = '1';
-    player.style.pointerEvents = 'auto';
-    player.style.transform = 'translateX(-50%) translateY(0)';
-  }
-
-  function close() {
-    player.style.opacity = '0';
-    player.style.pointerEvents = 'none';
-    player.style.transform = 'translateX(-50%) translateY(16px)';
-  }
-
-  function loadTrack(index: number) {
-    currentTrack = index;
-    const track = playlist[index];
-    trackName.textContent = track.name;
-    trackDuration.textContent = track.duration;
-    audio.querySelector('source')!.src = track.src;
-    audio.load();
-  }
-
-  function togglePlay() {
-    if (isPlaying) {
-      audio.pause();
-    } else {
-      audio.play().catch(() => {
-        // Audio file not available — silent placeholder
-        console.log('无法播放音频');
-      });
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        trackIndex: currentTrack,
+        currentTime: audio.currentTime || 0,
+        volume: audio.volume,
+        isPlaying,
+      }));
     }
-  }
 
-  function updatePlayIcon() {
-    iconPlay.style.display = isPlaying ? 'none' : 'block';
-    iconPause.style.display = isPlaying ? 'block' : 'none';
-  }
+    function open() {
+      player.style.opacity = '1';
+      player.style.pointerEvents = 'auto';
+      player.style.transform = 'translateX(-50%) translateY(0)';
+    }
 
-  audio.addEventListener('play', () => { isPlaying = true; updatePlayIcon(); });
-  audio.addEventListener('pause', () => { isPlaying = false; updatePlayIcon(); });
-  audio.addEventListener('ended', () => { currentTrack = (currentTrack + 1) % playlist.length; loadTrack(currentTrack); audio.play().catch(() => {}); });
+    function close() {
+      player.style.opacity = '0';
+      player.style.pointerEvents = 'none';
+      player.style.transform = 'translateX(-50%) translateY(16px)';
+    }
 
-  trigger?.addEventListener('click', open);
-  closeBtn?.addEventListener('click', close);
-  btnPlay.addEventListener('click', togglePlay);
-  btnPrev.addEventListener('click', () => { currentTrack = (currentTrack - 1 + playlist.length) % playlist.length; loadTrack(currentTrack); if (isPlaying) audio.play().catch(() => {}); });
-  btnNext.addEventListener('click', () => { currentTrack = (currentTrack + 1) % playlist.length; loadTrack(currentTrack); if (isPlaying) audio.play().catch(() => {}); });
-  volumeSlider.addEventListener('input', () => { audio.volume = Number(volumeSlider.value) / 100; });
+    function loadTrack(index: number) {
+      currentTrack = index;
+      const track = playlist[index];
+      trackName.textContent = track.name;
+      trackDuration.textContent = track.duration;
+      audio.querySelector('source')!.src = track.src;
+      audio.load();
+    }
 
-  // Close on Escape
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') close();
-  });
+    function togglePlay() {
+      if (isPlaying) {
+        audio.pause();
+      } else {
+        audio.play().catch(() => {});
+      }
+    }
 
-    // Initial volume
-    audio.volume = 0.6;
+    function updatePlayIcon() {
+      iconPlay.style.display = isPlaying ? 'none' : 'block';
+      iconPause.style.display = isPlaying ? 'block' : 'none';
+    }
+
+    // Restore previous session
+    const saved = (() => {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+      catch { return {}; }
+    })();
+
+    if (saved.trackIndex !== undefined) {
+      currentTrack = saved.trackIndex;
+      loadTrack(currentTrack);
+
+      audio.addEventListener('loadeddata', () => {
+        if (saved.currentTime) audio.currentTime = saved.currentTime;
+        if (saved.isPlaying) {
+          audio.play().catch(() => {});
+          isPlaying = true;
+          updatePlayIcon();
+        }
+      }, { once: true });
+    } else {
+      loadTrack(0);
+    }
+
+    audio.volume = saved.volume ?? 0.6;
+    volumeSlider.value = (saved.volume ?? 0.6) * 100;
+
+    audio.addEventListener('play', () => { isPlaying = true; updatePlayIcon(); saveState(); });
+    audio.addEventListener('pause', () => { isPlaying = false; updatePlayIcon(); saveState(); });
+    audio.addEventListener('ended', () => {
+      currentTrack = (currentTrack + 1) % playlist.length;
+      loadTrack(currentTrack);
+      audio.play().catch(() => {});
+    });
+    audio.addEventListener('timeupdate', () => {
+      if (Math.floor(audio.currentTime) % 5 === 0) saveState();
+    });
+
+    trigger?.addEventListener('click', (e) => { e.stopPropagation(); open(); });
+    closeBtn?.addEventListener('click', close);
+    btnPlay.addEventListener('click', togglePlay);
+    btnPrev.addEventListener('click', () => {
+      currentTrack = (currentTrack - 1 + playlist.length) % playlist.length;
+      loadTrack(currentTrack);
+      if (isPlaying) audio.play().catch(() => {});
+    });
+    btnNext.addEventListener('click', () => {
+      currentTrack = (currentTrack + 1) % playlist.length;
+      loadTrack(currentTrack);
+      if (isPlaying) audio.play().catch(() => {});
+    });
+    volumeSlider.addEventListener('input', () => {
+      audio.volume = Number(volumeSlider.value) / 100;
+      saveState();
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') close();
+    });
+
+    // Auto-hide when clicking outside the player
+    document.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (player.style.opacity !== '1') return;
+      if (!player.contains(target) && !trigger?.contains(target)) {
+        close();
+      }
+    });
+
+    // Persist state before navigating away
+    window.addEventListener('beforeunload', saveState);
   })();
 </script>

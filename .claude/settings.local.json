@@ -10,7 +10,12 @@
       "Bash(curl -s http://localhost:4321/)",
       "Bash(xxd -l 100 \"D:/starry-breeze/src/components/ui/MusicPlayer.astro\")",
       "Bash(xxd)",
-      "Bash(node *)"
+      "Bash(node *)",
+      "Bash(curl -s -o /dev/null -w '%{http_code}' http://localhost:4321/posts/)",
+      "Bash(curl -s -o NUL -w '%{http_code}' http://localhost:4321/posts/)",
+      "Bash(curl -s http://localhost:4321/posts/?category=poetry)",
+      "Bash(curl -s http://localhost:4321/posts/late-night-listening/)",
+      "Bash(taskkill //F //IM node.exe)"
     ]
   }
 }
