@@ -1,44 +1,47 @@
 ---
 import ThemeToggle from '@/components/ui/ThemeToggle.astro';
+import ConstructDivider from '@/components/ui/ConstructDivider.astro';
 ---
 
 <aside
-  class="fixed left-0 top-0 h-full flex flex-col items-start py-10 px-6 border-r z-50 construct-corner"
+  class="sidebar fixed left-0 top-0 h-full flex flex-col z-50 construct-corner"
   style="
     width: var(--sidebar-width);
     border-color: var(--border-light);
     background: color-mix(in srgb, var(--bg-main) 85%, transparent);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+    padding: 2rem 1.25rem;
+    border-right: 1px solid var(--border-light);
   "
 >
   <!-- Corner brackets -->
   <div class="sidebar-corner-tl" aria-hidden="true"></div>
   <div class="sidebar-corner-br" aria-hidden="true"></div>
 
-  <!-- Logo -->
-  <a href="/" class="no-underline mb-16 block logo-area relative">
-    <div class="logo-area flex flex-col items-start gap-1">
-      <div class="logo-frame" aria-hidden="true"></div>
-      <svg width="40" height="40" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="16" cy="16" r="14" stroke="var(--night-blue)" stroke-width="0.8" opacity="0.6"/>
-        <circle cx="16" cy="16" r="8" stroke="var(--breeze-blue)" stroke-width="0.6" opacity="0.4"/>
-        <circle cx="16" cy="12" r="1.2" fill="var(--deep-sky)" opacity="0.7"/>
-        <circle cx="12" cy="18" r="0.8" fill="var(--deep-sky)" opacity="0.5"/>
-        <circle cx="20" cy="17" r="0.6" fill="var(--deep-sky)" opacity="0.6"/>
-        <circle cx="15" cy="16" r="0.5" fill="var(--breeze-blue)" opacity="0.5"/>
-        <line x1="10" y1="14" x2="12" y2="16" stroke="var(--breeze-blue)" stroke-width="0.3" opacity="0.4"/>
-        <line x1="22" y1="14" x2="20" y2="17" stroke="var(--breeze-blue)" stroke-width="0.3" opacity="0.4"/>
-        <line x1="12" y1="14" x2="10" y2="18" stroke="var(--breeze-blue)" stroke-width="0.3" opacity="0.3"/>
-        <line x1="20" y1="14" x2="22" y2="17" stroke="var(--breeze-blue)" stroke-width="0.3" opacity="0.3"/>
-      </svg>
+  <!-- ======== Section 1: Logo ======== -->
+  <a href="/" class="no-underline block logo-link" style="margin-bottom: 1.25rem;">
+    <div class="flex items-center gap-2.5">
+      <div class="logo-icon-wrap" aria-hidden="true">
+        <svg width="36" height="36" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="14" stroke="var(--night-blue)" stroke-width="0.8" opacity="0.6"/>
+          <circle cx="16" cy="16" r="8" stroke="var(--breeze-blue)" stroke-width="0.6" opacity="0.4"/>
+          <circle cx="16" cy="12" r="1.2" fill="var(--deep-sky)" opacity="0.7"/>
+          <circle cx="12" cy="18" r="0.8" fill="var(--deep-sky)" opacity="0.5"/>
+          <circle cx="20" cy="17" r="0.6" fill="var(--deep-sky)" opacity="0.6"/>
+          <circle cx="15" cy="16" r="0.5" fill="var(--breeze-blue)" opacity="0.5"/>
+          <line x1="10" y1="14" x2="12" y2="16" stroke="var(--breeze-blue)" stroke-width="0.3" opacity="0.4"/>
+          <line x1="22" y1="14" x2="20" y2="17" stroke="var(--breeze-blue)" stroke-width="0.3" opacity="0.4"/>
+          <line x1="12" y1="14" x2="10" y2="18" stroke="var(--breeze-blue)" stroke-width="0.3" opacity="0.3"/>
+          <line x1="20" y1="14" x2="22" y2="17" stroke="var(--breeze-blue)" stroke-width="0.3" opacity="0.3"/>
+        </svg>
+      </div>
       <span
-        class="text-xl font-bold tracking-widest"
+        class="text-lg font-bold tracking-wider"
         style="
           font-family: var(--font-serif);
           color: var(--night-blue);
-          writing-mode: vertical-rl;
-          letter-spacing: 0.3em;
+          letter-spacing: 0.25em;
         "
       >
         风辰
@@ -46,44 +49,45 @@ import ThemeToggle from '@/components/ui/ThemeToggle.astro';
     </div>
   </a>
 
-  <!-- Navigation -->
-  <nav class="flex flex-col items-start gap-8 flex-1" style="writing-mode: vertical-rl;">
+  <ConstructDivider variant="line" />
+
+  <!-- ======== Section 2: Navigation ======== -->
+  <nav class="sidebar-nav flex flex-col" style="gap: 0.5rem; padding: 1rem 0.25rem;">
     <a
       href="/"
-      class="nav-link text-base tracking-[0.25em] no-underline py-1 relative transition-colors"
+      class="nav-link text-sm tracking-[0.15em] no-underline py-1.5 px-1 relative transition-colors"
       style="font-family: var(--font-sans);"
     >
       首页
     </a>
     <a
       href="/posts/"
-      class="nav-link text-base tracking-[0.25em] no-underline py-1 relative transition-colors"
+      class="nav-link text-sm tracking-[0.15em] no-underline py-1.5 px-1 relative transition-colors"
       style="font-family: var(--font-sans);"
     >
       文字
     </a>
     <a
       href="/about"
-      class="nav-link text-base tracking-[0.25em] no-underline py-1 relative transition-colors"
+      class="nav-link text-sm tracking-[0.15em] no-underline py-1.5 px-1 relative transition-colors"
       style="font-family: var(--font-sans);"
     >
       关于
     </a>
   </nav>
 
-  <!-- Diagonal accent -->
-  <div class="sidebar-diagonal" aria-hidden="true"></div>
+  <ConstructDivider variant="line" />
 
-  <!-- Bottom controls -->
-  <div class="flex flex-col items-center gap-6 mt-auto">
+  <!-- ======== Section 3: Controls ======== -->
+  <div class="flex items-center gap-4" style="padding: 1rem 0.25rem 0;">
     <button
       id="music-trigger"
-      class="bg-transparent border-none cursor-pointer p-1 transition-opacity"
+      class="bg-transparent border-none cursor-pointer p-1 transition-opacity flex items-center"
       style="color: var(--text-secondary);"
       aria-label="打开音乐播放器"
       title="音乐"
     >
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
         <path d="M9 18V5l12-2v13"/>
         <circle cx="6" cy="18" r="3"/>
         <circle cx="18" cy="16" r="3"/>
@@ -91,22 +95,28 @@ import ThemeToggle from '@/components/ui/ThemeToggle.astro';
     </button>
     <ThemeToggle />
   </div>
+
+  <!-- Diagonal accent -->
+  <div class="sidebar-diagonal" aria-hidden="true"></div>
 </aside>
 
 <style>
   .nav-link {
     color: var(--text-secondary);
+    display: block;
+    width: 100%;
   }
   .nav-link:hover {
     color: var(--deep-sky);
   }
 
-  /* Vertical accent bar on hover */
+  /* Hover: left accent bar */
   .nav-link::after {
     content: '';
     position: absolute;
-    right: -8px;
-    top: 0;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
     width: 2px;
     height: 0%;
     background: var(--deep-sky);
@@ -114,31 +124,36 @@ import ThemeToggle from '@/components/ui/ThemeToggle.astro';
     opacity: 0.6;
   }
   .nav-link:hover::after {
-    height: 100%;
+    height: 60%;
   }
 
-  /* Slash prefix on hover */
+  /* Hover: // prefix */
   .nav-link::before {
     content: '//';
     position: absolute;
-    left: -20px;
-    top: 0;
+    left: 6px;
+    top: 50%;
+    transform: translateY(-50%) translateX(-4px);
     opacity: 0;
     font-size: 0.55rem;
     color: var(--breeze-blue);
     font-family: var(--font-sans);
     transition: opacity 0.4s ease, transform 0.4s ease;
-    transform: translateX(-4px);
   }
   .nav-link:hover::before {
     opacity: 0.5;
-    transform: translateX(0);
+    transform: translateY(-50%) translateX(0);
   }
 
-  /* Diagonal accent at bottom */
+  /* Logo icon wrapper */
+  .logo-icon-wrap {
+    position: relative;
+  }
+
+  /* Diagonal accent shifted for new layout */
   .sidebar-diagonal {
     position: absolute;
-    bottom: 80px;
+    bottom: 60px;
     left: 0;
     right: 0;
     height: 1px;
@@ -150,11 +165,12 @@ import ThemeToggle from '@/components/ui/ThemeToggle.astro';
       var(--breeze-blue) 70%,
       transparent
     );
-    transform: rotate(-5deg);
-    opacity: 0.15;
+    transform: rotate(-3deg);
+    opacity: 0.12;
+    pointer-events: none;
   }
 
-  /* Corner brackets override (larger than default) */
+  /* Corner brackets */
   .sidebar-corner-tl {
     position: absolute;
     top: 8px;
@@ -176,19 +192,6 @@ import ThemeToggle from '@/components/ui/ThemeToggle.astro';
     border-bottom: 1px solid var(--breeze-blue);
     border-right: 1px solid var(--breeze-blue);
     opacity: 0.2;
-    pointer-events: none;
-  }
-
-  /* Logo frame */
-  .logo-frame {
-    position: absolute;
-    top: -8px;
-    left: -8px;
-    right: -8px;
-    bottom: -8px;
-    border: 1px solid var(--border-light);
-    clip-path: polygon(8px 0%, 100% 0%, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0% 100%, 0% 8px);
-    opacity: 0.25;
     pointer-events: none;
   }
 </style>

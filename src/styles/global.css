@@ -27,7 +27,7 @@
   --transition-slow: 800ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-medium: 500ms cubic-bezier(0.4, 0, 0.2, 1);
 
-  --sidebar-width: 200px;
+  --sidebar-width: 220px;
 }
 
 [data-theme='dark'] {
@@ -82,7 +82,7 @@ body {
 }
 
 .main-content {
-  margin-left: var(--sidebar-width);
+  margin-left: 0;
   flex: 1;
   min-width: 0;
 }
@@ -167,9 +167,6 @@ a:hover {
     flex-direction: column;
   }
 
-  .main-content {
-    margin-left: 0;
-  }
 
   /* Sidebar → top bar */
   aside[class*="fixed"] {
