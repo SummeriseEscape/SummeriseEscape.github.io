@@ -4,7 +4,8 @@ import BaseLayout from '@/components/layout/BaseLayout.astro';
 import Hero from '@/components/home/Hero.astro';
 import PostGrid from '@/components/home/PostGrid.astro';
 
-const posts = await getCollection('posts', ({ data }) => !data.draft);
+// 首页只显示精选文章（featured: true），非精选文章仅在 /posts/ 列表页出现
+const posts = await getCollection('posts', ({ data }) => !data.draft && data.featured === true);
 const published = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---
 

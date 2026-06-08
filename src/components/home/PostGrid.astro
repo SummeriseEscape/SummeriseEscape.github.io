@@ -8,7 +8,6 @@ interface Props {
 }
 
 const { posts } = Astro.props;
-const [first, ...rest] = posts;
 ---
 
 <section
@@ -18,7 +17,7 @@ const [first, ...rest] = posts;
   <!-- Section header with watermark -->
   <div class="post-grid-section-header">
     <span class="post-grid-watermark" aria-hidden="true">风辰</span>
-    <span class="post-grid-label">Writings</span>
+    <span class="post-grid-label">精选</span>
   </div>
 
   <ConstructDivider variant="diamond" />
@@ -34,21 +33,7 @@ const [first, ...rest] = posts;
           padding: 1.5rem;
         "
       >
-        <!-- First post: featured, spans 2 columns -->
-        {first && (
-          <div class="post-grid-featured">
-            <PostCard
-              title={first.data.title}
-              slug={first.id.replace(/\.(mdx|md)$/, '')}
-              date={first.data.date}
-              excerpt={first.data.excerpt}
-              image={first.data.image}
-              imageAlt={first.data.imageAlt}
-              mood={first.data.mood}
-            />
-          </div>
-        )}
-        {rest.map((post) => (
+        {posts.map((post) => (
           <PostCard
             title={post.data.title}
             slug={post.id.replace(/\.(mdx|md)$/, '')}

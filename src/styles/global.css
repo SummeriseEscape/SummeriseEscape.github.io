@@ -71,7 +71,7 @@ body {
   font-family: var(--font-serif);
   background-color: var(--bg-main);
   color: var(--text-primary);
-  line-height: 1.8;
+  line-height: 1.7;
   overflow-x: hidden;
 }
 

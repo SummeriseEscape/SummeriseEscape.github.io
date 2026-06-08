@@ -142,6 +142,13 @@
     const volumeSlider = document.getElementById('volume-slider') as HTMLInputElement;
     const audio = document.getElementById('audio-element') as HTMLAudioElement;
 
+    // ========== 播放列表 ==========
+    // 每首歌曲需要三个字段：
+    //   name     — 显示的曲目名称
+    //   src      — 音频文件路径，文件放在 public/audio/ 目录下
+    //   duration — 显示的时长（纯文本，需与实际文件时长匹配）
+    // 增删歌曲：复制或删除下方 {...} 条目即可。
+    // 音频格式：当前为 FLAC，如使用 MP3 等其他格式，需同步修改下方 <source type="..."> 标签。
     const playlist = [
       { name: '揪心的玩笑与漫长的白日梦', src: '/audio/万能青年旅店 - 揪心的玩笑与漫长的白日梦.flac', duration: '03:42' },
       { name: '美好事物', src: '/audio/房东的猫 - 美好事物 (2017).flac', duration: '04:15' },

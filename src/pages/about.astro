@@ -33,6 +33,7 @@ import GeometricCircle from '@/components/ui/GeometricCircle.astro';
       <div class="about-diagonal" aria-hidden="true"></div>
 
       <!-- Avatar -->
+      <!-- 替换头像：将你的头像图片放到 public/images/avatar.jpg，支持 jpg/png/webp -->
       <div class="about-avatar-frame">
         <div
           style="
@@ -44,9 +45,14 @@ import GeometricCircle from '@/components/ui/GeometricCircle.astro';
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
           "
         >
-          <img src="/images/avatar.jpg" alt="头像" />
+          <img
+            src="/images/avatar.jpg"
+            alt="头像"
+            style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"
+          />
         </div>
       </div>
 
@@ -66,11 +72,12 @@ import GeometricCircle from '@/components/ui/GeometricCircle.astro';
     </div>
 
     <!-- Self introduction -->
+    <!-- 修改自我介绍：直接编辑下方 <p> 标签内的文字即可 -->
     <section class="mb-16">
       <h2 class="about-section-title">
         关于
       </h2>
-      <div style="font-family: var(--font-serif); color: var(--text-secondary); line-height: 2; font-size: 1.05rem;">
+      <div style="font-family: var(--font-serif); color: var(--text-secondary); line-height: 1.75; font-size: 1.05rem;">
         <p>
           这只是一个安静的数字空间，用来存放一些文字、一些昼夜、一些被风吹散的念头。
         </p>
@@ -87,6 +94,8 @@ import GeometricCircle from '@/components/ui/GeometricCircle.astro';
     </section>
 
     <!-- Social links -->
+    <!-- 修改社交链接：增删下方 <a> 元素即可。href 为链接地址，标签文字直接修改。
+         注意：Email 链接需使用 mailto: 前缀，例如 href="mailto:xxx@example.com" -->
     <section>
       <h2 class="about-section-title">
         链接

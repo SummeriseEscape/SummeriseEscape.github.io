@@ -23,8 +23,10 @@ const { title, description, image } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- favicon：替换 /public/favicon.svg 文件即可更换网站图标 -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <SEO title={title} description={description} image={image} />
+    <!-- 浏览器标签页标题：'风辰' 和 '风吹过夏夜星辰' 可在 src/utils/constants.ts 中统一修改 -->
     <title>{title ? `${title} — 风辰` : '风辰 — 风吹过夏夜星辰'}</title>
     <script is:inline>
       (function () {
