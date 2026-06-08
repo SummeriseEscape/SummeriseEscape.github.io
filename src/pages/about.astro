@@ -7,21 +7,15 @@ import GeometricCircle from '@/components/ui/GeometricCircle.astro';
   <div style="max-width: 720px; margin-inline: auto; padding: 6rem 2rem 4rem; position: relative;">
 
     <!-- Decorative elements -->
-    <GeometricCircle size={80} top="5%" left="-10%" color="var(--breeze-blue)" delay={0} duration={7} shape="diamond" rotation={15} />
-    <GeometricCircle size={50} top="20%" right="-5%" color="var(--summer-pink)" delay={1.2} duration={6} shape="triangle" rotation={10} />
+    <GeometricCircle size={90} top="4%" left="-8%" color="var(--breeze-blue)" delay={0} duration={7} shape="diamond" rotation={15} />
+    <GeometricCircle size={55} top="18%" right="-5%" color="var(--summer-pink)" delay={1.2} duration={6} shape="triangle" rotation={10} />
+    <GeometricCircle size={120} bottom="15%" left="-10%" color="var(--dust-purple)" delay={2} duration={8} shape="circle" blur={4} />
+    <GeometricCircle size={60} bottom="28%" right="-6%" color="var(--breeze-blue)" delay={3} duration={6.5} shape="diamond" rotation={-15} />
 
     <!-- Profile card -->
-    <div
-      class="mb-16 p-10 construct-corner"
-      style="
-        background: var(--bg-soft);
-        border: 1px solid var(--border-light);
-        position: relative;
-        overflow: hidden;
-      "
-    >
-      <!-- Dot grid decoration inside card -->
-      <div class="absolute inset-0 opacity-30 pointer-events-none">
+    <div class="about-profile-card mb-16">
+      <!-- Dot grid background -->
+      <div class="dot-grid-bg">
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <pattern id="about-dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
@@ -32,52 +26,52 @@ import GeometricCircle from '@/components/ui/GeometricCircle.astro';
         </svg>
       </div>
 
-      <!-- Diagonal accent behind avatar -->
+      <!-- Watermark -->
+      <span class="about-watermark" aria-hidden="true">星风</span>
+
+      <!-- Diagonal accent -->
       <div class="about-diagonal" aria-hidden="true"></div>
 
-      <!-- Avatar placeholder -->
-      <div class="relative flex flex-col md:flex-row items-start gap-8">
+      <!-- Avatar -->
+      <div class="about-avatar-frame">
         <div
-          class="shrink-0 flex items-center justify-center"
           style="
-            width: 100px;
-            height: 100px;
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--breeze-blue)33, var(--dust-purple)33);
+            background: linear-gradient(135deg, color-mix(in srgb, var(--breeze-blue) 20%, transparent), color-mix(in srgb, var(--dust-purple) 20%, transparent));
             border: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
           "
         >
-          <svg width="40" height="40" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="12" cy="10" r="3" stroke="var(--night-blue)" stroke-width="1" />
-            <path d="M5 26c0-4 3.5-6 7-6s7 2 7 6" stroke="var(--night-blue)" stroke-width="1" />
-            <path d="M20 14c3 0 5 2 5 5s-2 5-5 5" stroke="var(--breeze-blue)" stroke-width="0.8" />
+          <svg width="48" height="48" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="10" r="3" stroke="var(--night-blue)" stroke-width="1.2" />
+            <path d="M5 26c0-4 3.5-6 7-6s7 2 7 6" stroke="var(--night-blue)" stroke-width="1.2" />
+            <path d="M20 14c3 0 5 2 5 5s-2 5-5 5" stroke="var(--breeze-blue)" stroke-width="1" />
           </svg>
         </div>
-
-        <div class="relative">
-          <h1
-            class="text-4xl font-bold mb-2"
-            style="font-family: var(--font-serif); color: var(--text-primary);"
-          >
-            Starry Breeze
-          </h1>
-          <p
-            class="text-sm tracking-wider mb-4"
-            style="color: var(--text-muted); font-family: var(--font-sans);"
-          >
-            数字诗集 · 记录 · 观察
-          </p>
-          <hr class="construct-hr" />
-        </div>
       </div>
+
+      <h1
+        class="text-4xl font-bold mb-2"
+        style="font-family: var(--font-serif); color: var(--text-primary);"
+      >
+        Starry Breeze
+      </h1>
+      <p
+        class="text-sm tracking-wider mb-4"
+        style="color: var(--text-muted); font-family: var(--font-sans);"
+      >
+        数字诗集 · 记录 · 观察
+      </p>
+      <hr class="construct-hr" />
     </div>
 
     <!-- Self introduction -->
     <section class="mb-16">
-      <h2
-        class="text-xl font-bold mb-6 tracking-wider"
-        style="font-family: var(--font-sans); color: var(--text-primary); letter-spacing: 0.1em;"
-      >
+      <h2 class="about-section-title">
         关于
       </h2>
       <div style="font-family: var(--font-serif); color: var(--text-secondary); line-height: 2; font-size: 1.05rem;">
@@ -98,39 +92,20 @@ import GeometricCircle from '@/components/ui/GeometricCircle.astro';
 
     <!-- Social links -->
     <section>
-      <h2
-        class="text-xl font-bold mb-6 tracking-wider"
-        style="font-family: var(--font-sans); color: var(--text-primary); letter-spacing: 0.1em;"
-      >
+      <h2 class="about-section-title">
         链接
       </h2>
-      <div class="flex flex-wrap gap-6">
-        <a
-          href="https://github.com/SummeriseEscape"
-          class="text-sm no-underline transition-colors duration-500"
-          style="color: var(--text-secondary); font-family: var(--font-sans);"
-        >
+      <div class="about-links-row">
+        <a href="https://github.com/SummeriseEscape" class="about-link-item">
           GitHub
         </a>
-        <a
-          href="https://twitter.com/"
-          class="text-sm no-underline transition-colors duration-500"
-          style="color: var(--text-secondary); font-family: var(--font-sans);"
-        >
+        <a href="https://twitter.com/" class="about-link-item">
           推特
         </a>
-        <a
-          href="https://www.zhihu.com/people/14-66-55-59"
-          class="text-sm no-underline transition-colors duration-500"
-          style="color: var(--text-secondary); font-family: var(--font-sans);"
-        >
+        <a href="https://www.zhihu.com/people/14-66-55-59" class="about-link-item">
           知乎
         </a>
-        <a
-          href="3467328673@qq.com"
-          class="text-sm no-underline transition-colors duration-500"
-          style="color: var(--text-secondary); font-family: var(--font-sans);"
-        >
+        <a href="3467328673@qq.com" class="about-link-item">
           Email
         </a>
       </div>

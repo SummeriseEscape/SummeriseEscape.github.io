@@ -8,11 +8,11 @@
 .construct-corner::after {
   content: '';
   position: absolute;
-  width: 20px;
-  height: 20px;
-  border-color: var(--breeze-blue);
+  width: 24px;
+  height: 24px;
+  border-color: var(--deep-sky);
   border-style: solid;
-  opacity: 0.25;
+  opacity: 0.2;
   pointer-events: none;
   z-index: 1;
 }

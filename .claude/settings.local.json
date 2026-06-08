@@ -21,7 +21,10 @@
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4321)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4322)",
       "Bash(rg \"TW Kai\" dist/ --include=\"*.css\" -l)",
-      "Bash(xxd \"src/components/ui/MusicPlayer.astro\")"
+      "Bash(xxd \"src/components/ui/MusicPlayer.astro\")",
+      "Bash(curl -s http://localhost:4321/about/)",
+      "Bash(curl -s http://localhost:4321/posts/)",
+      "Bash(curl -s http://localhost:4321/posts/starry-summer/)"
     ]
   }
 }

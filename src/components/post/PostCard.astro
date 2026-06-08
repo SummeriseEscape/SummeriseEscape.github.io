@@ -22,46 +22,43 @@ const { title, slug, date, excerpt, image, imageAlt, mood } = Astro.props;
       style="
         background: var(--bg-soft);
         border: 1px solid var(--border-light);
-        transition: transform var(--transition-slow), border-color var(--transition-medium), box-shadow var(--transition-medium);
+        transition: transform var(--transition-slow), border-color var(--transition-medium);
       "
     >
-      <!-- Hover corner bracket -->
-      <span class="post-card-bracket" aria-hidden="true"></span>
+      <!-- Dual corner brackets -->
+      <span class="post-card-bracket-tr" aria-hidden="true"></span>
+      <span class="post-card-bracket-bl" aria-hidden="true"></span>
 
-      <!-- Image -->
-      <div class="overflow-hidden" style="aspect-ratio: 4/3;">
+      <!-- Image area with overlays -->
+      <div class="post-card-image-wrap">
         <img
           src={image}
           alt={imageAlt}
           loading="lazy"
           decoding="async"
-          class="w-full h-full object-cover"
-          style="transition: transform var(--transition-slow);"
         />
+        <!-- Date overlay — bottom-left -->
+        <time class="post-card-date-overlay">
+          {formatDate(date)}
+        </time>
+        <!-- Mood badge — top-right -->
+        <span class="post-card-mood-badge">
+          <MoodBadge mood={mood} />
+        </span>
       </div>
 
       <!-- Content -->
-      <div class="p-5">
-        <div class="flex items-center justify-between mb-3 gap-2">
-          <time
-            class="text-xs tracking-wider"
-            style="color: var(--text-muted); font-family: var(--font-sans);"
-          >
-            {formatDate(date)}
-          </time>
-          <MoodBadge mood={mood} />
-        </div>
-
+      <div style="padding: 1.5rem;">
         <h3
-          class="text-xl font-bold mb-2 m-0"
+          class="text-xl font-bold m-0"
           style="font-family: var(--font-serif); color: var(--text-primary);"
         >
           {title}
         </h3>
-
+        <div class="post-card-title-line"></div>
         <p
           class="text-sm m-0 line-clamp-1"
-          style="color: var(--text-secondary); line-height: 1.6;"
+          style="color: var(--text-secondary); line-height: 1.6; margin-top: 0.6rem;"
         >
           {excerpt}
         </p>
@@ -74,28 +71,8 @@ const { title, slug, date, excerpt, image, imageAlt, mood } = Astro.props;
   .post-card a:hover .post-card-inner {
     transform: translateY(-8px);
     border-color: var(--deep-sky);
-    box-shadow:
-      0 12px 40px rgba(49, 67, 90, 0.08),
-      0 4px 12px rgba(49, 67, 90, 0.04);
   }
   .post-card a:hover img {
     transform: scale(1.05);
-  }
-
-  /* Corner bracket on hover */
-  .post-card-bracket {
-    position: absolute;
-    top: 6px;
-    right: 6px;
-    width: 16px;
-    height: 16px;
-    border-top: 1px solid var(--deep-sky);
-    border-right: 1px solid var(--deep-sky);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    z-index: 1;
-  }
-  .post-card a:hover .post-card-bracket {
-    opacity: 0.4;
   }
 </style>

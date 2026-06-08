@@ -155,6 +155,9 @@ a:hover {
   .post-grid {
     grid-template-columns: 1fr 1fr !important;
   }
+  .post-grid .post-grid-featured {
+    grid-column: 1 / -1;
+  }
 }
 
 /* Mobile */
@@ -211,17 +214,37 @@ a:hover {
     gap: 1.5rem !important;
   }
 
+  .post-grid .post-grid-featured {
+    grid-column: 1 / -1 !important;
+  }
+
   .post-grid-wrapper {
     padding: 4rem 1rem !important;
   }
 
   /* Post article */
   .post-article {
-    padding: 5rem 1rem 3rem !important;
+    padding: 4rem 0.75rem 3rem !important;
   }
 
   .post-article h1 {
-    font-size: 2rem !important;
+    font-size: 1.6rem !important;
+  }
+
+  .post-hero-banner {
+    margin-bottom: 2rem !important;
+    border-radius: 0 !important;
+  }
+
+  .post-hero-title {
+    font-size: 1.3rem !important;
+    bottom: 1rem !important;
+    left: 1rem !important;
+    right: 1rem !important;
+  }
+
+  .post-article-new {
+    padding: 0 1rem 4rem !important;
   }
 
   /* Music player full width */

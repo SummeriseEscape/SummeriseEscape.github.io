@@ -12,7 +12,6 @@ const { data, body } = post;
 const rawContent = body ?? '';
 const readTime = readingTime(rawContent);
 
-// Category labels
 const categoryMap: Record<string, string> = {
   poetry: '诗歌',
   diary: '日记',
@@ -24,126 +23,84 @@ const categoryMap: Record<string, string> = {
 
 <article
   class="post-article construct-corner"
-  style="max-width: 720px; margin-inline: auto; padding: 2rem 1.5rem 6rem;"
+  style="max-width: 900px; margin-inline: auto; padding: 0 1.5rem 6rem;"
 >
-  <!-- Top breathing space -->
-  <div style="min-height: 20vh;"></div>
-
-  <!-- Title -->
-  <h1
-    class="text-4xl md:text-5xl font-bold mb-6 m-0 leading-tight"
-    style="font-family: var(--font-serif); color: var(--text-primary);"
-  >
-    {data.title}
-  </h1>
-
-  <!-- Meta row -->
-  <div class="flex flex-wrap items-center gap-3 mb-4">
-    <time
-      class="text-sm"
-      style="color: var(--text-muted); font-family: var(--font-sans);"
-    >
-      {formatDate(data.date)}
-    </time>
-    <span style="color: var(--border-light);">·</span>
-    <MoodBadge mood={data.mood} />
-    <span style="color: var(--border-light);">·</span>
-    <span
-      class="text-sm"
-      style="color: var(--text-muted); font-family: var(--font-sans);"
-    >
-      {categoryMap[data.category] ?? data.category}
-    </span>
-    <span style="color: var(--border-light);">·</span>
-    <span
-      class="text-sm"
-      style="color: var(--text-muted); font-family: var(--font-sans);"
-    >
-      沉浸时间约 {readTime} 分钟
-    </span>
-  </div>
-
-  <!-- Tags -->
-  {data.tags && data.tags.length > 0 && (
-    <div class="flex flex-wrap gap-2 mb-10">
-      {data.tags.map((tag) => (
-        <span
-          class="text-xs px-3 py-1 rounded-full"
-          style="
-            color: var(--text-secondary);
-            background: var(--bg-mist);
-            font-family: var(--font-sans);
-            border: 1px solid var(--border-light);
-          "
-        >
-          #{tag}
-        </span>
-      ))}
-    </div>
-  )}
-
-  <!-- Divider -->
-  <hr class="construct-hr" />
-
-  <!-- Cover image -->
-  <div class="mb-12 overflow-hidden" style="max-width: 900px; margin-inline: auto;">
+  <!-- Hero banner with cover image and title overlay -->
+  <div class="post-hero-banner">
     <img
       src={data.image}
       alt={data.imageAlt}
-      class="w-full h-auto"
       loading="eager"
       decoding="async"
-      style="display: block;"
     />
+    <div class="post-hero-overlay" aria-hidden="true"></div>
+    <h1 class="post-hero-title">
+      {data.title}
+    </h1>
   </div>
 
-  <!-- Content -->
-  <div
-    class="post-content"
-    style="
-      font-family: var(--font-serif);
-      font-size: 1.1rem;
-      line-height: 2;
-      color: var(--text-primary);
-    "
-  >
-    <slot />
-  </div>
+  <!-- Content area -->
+  <div class="post-article-new" style="position: relative;">
+    <!-- Floating content decorations -->
+    <div class="post-content-decoration left" aria-hidden="true"></div>
+    <div class="post-content-decoration right" aria-hidden="true"></div>
 
-  <!-- Bottom divider -->
-  <hr class="construct-hr" />
-
-  <!-- Tags (bottom) -->
-  {data.tags && data.tags.length > 0 && (
-    <div class="flex flex-wrap gap-2 mb-8">
-      {data.tags.map((tag) => (
-        <span
-          class="text-xs px-3 py-1 rounded-full"
-          style="
-            color: var(--text-secondary);
-            background: var(--bg-mist);
-            font-family: var(--font-sans);
-            border: 1px solid var(--border-light);
-          "
-        >
-          #{tag}
-        </span>
-      ))}
+    <!-- Meta row -->
+    <div class="post-meta-row-new">
+      <time>{formatDate(data.date)}</time>
+      <span class="post-meta-dot" aria-hidden="true"></span>
+      <MoodBadge mood={data.mood} />
+      <span class="post-meta-dot" aria-hidden="true"></span>
+      <span>{categoryMap[data.category] ?? data.category}</span>
+      <span class="post-meta-dot" aria-hidden="true"></span>
+      <span>沉浸时间约 {readTime} 分钟</span>
     </div>
-  )}
 
-  <div class="text-center py-8">
-    <a
-      href="/posts/"
-      class="text-sm tracking-wider"
+    <!-- Tags -->
+    {data.tags && data.tags.length > 0 && (
+      <div class="post-tags-new">
+        {data.tags.map((tag) => (
+          <span class="post-tag-new">#{tag}</span>
+        ))}
+      </div>
+    )}
+
+    <!-- Divider -->
+    <hr class="construct-hr" />
+
+    <!-- Content -->
+    <div
+      class="post-content"
       style="
-        color: var(--text-muted);
-        font-family: var(--font-sans);
-        text-decoration: none;
+        font-family: var(--font-serif);
+        font-size: 1.1rem;
+        line-height: 2;
+        color: var(--text-primary);
+        position: relative;
+        z-index: 1;
       "
     >
-      ← 返回文章列表
-    </a>
+      <slot />
+    </div>
+
+    <!-- Bottom divider -->
+    <hr class="construct-hr" />
+
+    <!-- Tags (bottom) -->
+    {data.tags && data.tags.length > 0 && (
+      <div class="post-tags-new">
+        {data.tags.map((tag) => (
+          <span class="post-tag-new">#{tag}</span>
+        ))}
+      </div>
+    )}
+
+    <!-- Back link -->
+    <div>
+      <a href="/posts/" class="post-back-link">
+        ← 返回文章列表
+      </a>
+    </div>
   </div>
 </article>
 

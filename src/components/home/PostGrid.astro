@@ -8,53 +8,64 @@ interface Props {
 }
 
 const { posts } = Astro.props;
+const [first, ...rest] = posts;
 ---
 
 <section
-  class="post-grid-wrapper px-8 py-24"
-  style="max-width: 1200px; margin-inline: auto;"
+  class="post-grid-wrapper"
+  style="max-width: 1200px; margin-inline: auto; padding: 5rem 2rem 4rem;"
 >
-  <div class="flex items-center gap-4 mb-10">
-    <div style="width: 24px; height: 1px; background: var(--border-light);"></div>
-    <span
-      class="text-xs tracking-[0.3em] uppercase"
-      style="color: var(--text-muted); font-family: var(--font-sans);"
-    >
-      文章
-    </span>
+  <!-- Section header with watermark -->
+  <div class="post-grid-section-header">
+    <span class="post-grid-watermark" aria-hidden="true">风辰</span>
+    <span class="post-grid-label">Writings</span>
   </div>
 
   <ConstructDivider variant="diamond" />
 
-  <div style="margin-top: 3rem;">
-    <div
-      class="post-grid construct-frame"
-      style="
-        display: grid;
-        grid-template-columns: 1fr 0.8fr 1.2fr;
-        gap: 2rem;
-        padding: 1.5rem;
-      "
-    >
-      {posts.map((post) => (
-        <PostCard
-          title={post.data.title}
-          slug={post.id.replace(/\.(mdx|md)$/, '')}
-          date={post.data.date}
-          excerpt={post.data.excerpt}
-          image={post.data.image}
-          imageAlt={post.data.imageAlt}
-          mood={post.data.mood}
-        />
-      ))}
-    </div>
+  <div class="post-grid-bg" style="margin-top: 3rem;">
+    {posts.length > 0 ? (
+      <div
+        class="post-grid construct-frame"
+        style="
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 2rem;
+          padding: 1.5rem;
+        "
+      >
+        <!-- First post: featured, spans 2 columns -->
+        {first && (
+          <div class="post-grid-featured">
+            <PostCard
+              title={first.data.title}
+              slug={first.id.replace(/\.(mdx|md)$/, '')}
+              date={first.data.date}
+              excerpt={first.data.excerpt}
+              image={first.data.image}
+              imageAlt={first.data.imageAlt}
+              mood={first.data.mood}
+            />
+          </div>
+        )}
+        {rest.map((post) => (
+          <PostCard
+            title={post.data.title}
+            slug={post.id.replace(/\.(mdx|md)$/, '')}
+            date={post.data.date}
+            excerpt={post.data.excerpt}
+            image={post.data.image}
+            imageAlt={post.data.imageAlt}
+            mood={post.data.mood}
+          />
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-20">
+        <p style="color: var(--text-muted); font-family: var(--font-sans);">
+          暂无文章。在 <code>src/content/posts/</code> 中添加你的第一篇 .mdx 文件。
+        </p>
+      </div>
+    )}
   </div>
-
-  {posts.length === 0 && (
-    <div class="text-center py-20">
-      <p style="color: var(--text-muted); font-family: var(--font-sans);">
-        暂无文章。在 <code>src/content/posts/</code> 中添加你的第一篇 .mdx 文件。
-      </p>
-    </div>
-  )}
 </section>
