@@ -1,0 +1,3 @@
+@echo off
+echo Starting Astro dev server + manage page...
+npm run manage

@@ -1,0 +1,828 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>内容管理 — 星风</title>
+  <style>
+    :root {
+      --bg: #F6F3EE;
+      --bg-soft: #FAF8F4;
+      --night-blue: #31435A;
+      --deep-sky: #5A7892;
+      --breeze-blue: #AFC3D4;
+      --summer-pink: #E7C6C0;
+      --dust-purple: #B6A9C9;
+      --text-primary: #2D3540;
+      --text-secondary: #6B7A8A;
+      --text-muted: #9AA8B5;
+      --border-light: rgba(49, 67, 90, 0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'HarmonyOS Sans SC', 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      height: 100vh;
+      display: flex;
+      overflow: hidden;
+    }
+    /* Sidebar */
+    #sidebar {
+      width: 220px;
+      min-width: 220px;
+      background: var(--bg-soft);
+      border-right: 1px solid var(--border-light);
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem 1rem;
+      gap: 0.25rem;
+    }
+    #sidebar .logo {
+      font-family: serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--night-blue);
+      letter-spacing: 0.25em;
+      margin-bottom: 1.5rem;
+      padding: 0 0.5rem;
+    }
+    #sidebar button {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 0.6rem 0.75rem;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+      cursor: pointer;
+      border-radius: 4px;
+      letter-spacing: 0.08em;
+      transition: all 0.2s;
+    }
+    #sidebar button:hover { background: rgba(49, 67, 90, 0.04); color: var(--text-primary); }
+    #sidebar button.active { background: var(--night-blue); color: #fff; }
+    #sidebar .stats {
+      margin-top: auto;
+      padding: 1rem 0.5rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-light);
+    }
+    /* Main */
+    #main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    #toolbar-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.5rem 1.5rem;
+      border-bottom: 1px solid var(--border-light);
+      background: var(--bg-soft);
+      flex-wrap: wrap;
+    }
+    #toolbar-bar button {
+      padding: 4px 8px;
+      border: 1px solid var(--border-light);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      cursor: pointer;
+      border-radius: 3px;
+      font-family: monospace;
+      transition: all 0.15s;
+    }
+    #toolbar-bar button:hover { background: var(--night-blue); color: #fff; border-color: var(--night-blue); }
+    #toolbar-bar .sep { width: 1px; height: 20px; background: var(--border-light); margin: 0 4px; }
+    #views { flex: 1; overflow-y: auto; padding: 2rem; }
+    /* Forms */
+    label {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 0.3rem;
+      letter-spacing: 0.05em;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 0.55rem 0.75rem;
+      border: 1px solid var(--border-light);
+      background: var(--bg-soft);
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      font-family: inherit;
+      border-radius: 3px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus, textarea:focus, select:focus { border-color: var(--deep-sky); }
+    textarea { resize: vertical; min-height: 80px; }
+    select { cursor: pointer; }
+    .row { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .row > * { flex: 1; min-width: 140px; }
+    .checkbox-row { display: flex; gap: 1.5rem; align-items: center; font-size: 0.85rem; }
+    .checkbox-row label { display: flex; align-items: center; gap: 0.4rem; margin: 0; cursor: pointer; }
+    .checkbox-row input[type=checkbox] { width: auto; accent-color: var(--night-blue); }
+    .tags-wrap { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; }
+    .tag-pill {
+      display: inline-flex; align-items: center; gap: 0.2rem;
+      padding: 2px 8px; font-size: 0.75rem;
+      background: var(--night-blue); color: #fff;
+      border-radius: 10px; cursor: pointer;
+    }
+    .tag-pill .x { opacity: 0.6; font-weight: 700; }
+    .tag-pill:hover .x { opacity: 1; }
+    #tag-input { width: 100px; padding: 0.3rem 0.5rem; font-size: 0.78rem; border: none; background: transparent; }
+    #tag-input:focus { outline: none; }
+    /* Editor */
+    #editor-area { display: flex; gap: 0; flex: 1; min-height: 400px; }
+    #editor-area textarea {
+      flex: 1; min-height: 100%; resize: none; border-radius: 0;
+      font-family: 'TW Kai', serif; font-size: 1rem; line-height: 1.75;
+      padding: 1.5rem; border: 1px solid var(--border-light);
+    }
+    #preview-pane {
+      flex: 1; padding: 1.5rem; overflow-y: auto;
+      border: 1px solid var(--border-light); border-left: none;
+      font-family: 'TW Kai', serif; font-size: 1rem; line-height: 1.75;
+      color: var(--text-primary); background: #fdfdfc;
+    }
+    #preview-pane h1 { font-size: 1.6rem; margin-bottom: 0.8em; }
+    #preview-pane h2 { font-size: 1.3rem; margin-bottom: 0.7em; }
+    #preview-pane p { margin-bottom: 1.2em; color: var(--text-secondary); }
+    #preview-pane blockquote {
+      margin: 1em 0; padding: 0.6em 1em;
+      border-left: 2px solid var(--breeze-blue);
+      background: var(--bg-soft); font-style: italic; color: var(--text-secondary);
+    }
+    #preview-pane strong { color: var(--text-primary); }
+    #preview-pane hr { margin: 1.5em 0; border: 0; height: 1px; background: var(--border-light); }
+    #preview-pane img { max-width: 100%; }
+    #preview-pane code { background: var(--bg-soft); padding: 1px 5px; border-radius: 3px; font-size: 0.9em; }
+    /* Messages */
+    .success-msg { color: #2d6a4f; background: #d8f3dc; padding: 0.5rem 1rem; border-radius: 4px; display: none; }
+    .error-msg { color: #9b2226; background: #fadbd8; padding: 0.5rem 1rem; border-radius: 4px; display: none; }
+    .show { display: block !important; }
+    /* Post list */
+    .post-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.75rem 1rem; border-bottom: 1px solid var(--border-light); cursor: pointer;
+      transition: background 0.15s;
+    }
+    .post-item:hover { background: var(--bg-soft); }
+    .post-item .info { display: flex; gap: 0.75rem; align-items: baseline; }
+    .post-item .title { font-weight: 600; font-family: serif; font-size: 1rem; }
+    .post-item .meta { font-size: 0.75rem; color: var(--text-muted); }
+    .post-item .badge {
+      font-size: 0.65rem; padding: 1px 6px; border-radius: 8px;
+      letter-spacing: 0.05em;
+    }
+    .badge-featured { background: var(--summer-pink); color: #fff; }
+    .badge-draft { background: var(--text-muted); color: #fff; }
+    .post-item .actions { display: flex; gap: 0.5rem; }
+    .post-item .actions button {
+      padding: 3px 10px; font-size: 0.72rem; border: 1px solid var(--border-light);
+      background: transparent; color: var(--text-secondary); cursor: pointer; border-radius: 3px;
+    }
+    .post-item .actions button.danger:hover { background: #9b2226; color: #fff; border-color: #9b2226; }
+    .post-item .actions button:hover { background: var(--night-blue); color: #fff; border-color: var(--night-blue); }
+    .btn-primary {
+      padding: 0.6rem 1.8rem; background: var(--night-blue); color: #fff;
+      border: none; border-radius: 3px; cursor: pointer; font-size: 0.88rem;
+      letter-spacing: 0.05em; transition: opacity 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.85; }
+    .btn-secondary {
+      padding: 0.6rem 1.8rem; background: transparent; color: var(--text-secondary);
+      border: 1px solid var(--border-light); border-radius: 3px; cursor: pointer;
+      font-size: 0.88rem; letter-spacing: 0.05em; transition: all 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--deep-sky); color: var(--deep-sky); }
+    /* Music */
+    .track-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.6rem 1rem; border-bottom: 1px solid var(--border-light);
+    }
+    .track-item .name { font-weight: 500; }
+    .track-item .dur { font-size: 0.78rem; color: var(--text-muted); margin-left: 0.75rem; }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <nav id="sidebar">
+    <div class="logo">星风 · 管理</div>
+    <button data-view="list" class="active" onclick="switchView('list')">文章列表</button>
+    <button data-view="new" onclick="switchView('new')">+ 新建文章</button>
+    <button data-view="music" onclick="switchView('music')">音乐管理</button>
+    <div class="stats" id="stats">加载中...</div>
+  </nav>
+
+  <!-- Main -->
+  <div id="main">
+    <!-- Toolbar (shown in editor view) -->
+    <div id="toolbar-bar" style="display:none">
+      <button title="加粗 (Ctrl+B)" data-md="**bold**">B</button>
+      <button title="斜体 (Ctrl+I)" data-md="*italic*">I</button>
+      <span class="sep"></span>
+      <button title="一级标题" data-md="# ">H1</button>
+      <button title="二级标题" data-md="## ">H2</button>
+      <button title="三级标题" data-md="### ">H3</button>
+      <span class="sep"></span>
+      <button title="引用" data-md="> ">"</button>
+      <button title="分隔线" data-md="---">—</button>
+      <button title="无序列表" data-md="- ">•</button>
+      <span class="sep"></span>
+      <button title="插入图片" id="btn-image">📷</button>
+      <button title="切换预览" id="btn-preview">👁</button>
+      <span class="sep"></span>
+      <span style="font-size:0.75rem;color:var(--text-muted);margin-left:auto">Ctrl+S 保存</span>
+    </div>
+
+    <!-- Views -->
+    <div id="views">
+      <!-- Post List View -->
+      <div id="view-list" class="view">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
+          <h2 style="font-family:serif;font-size:1.5rem">文章列表</h2>
+          <button class="btn-primary" onclick="switchView('new')">+ 新建文章</button>
+        </div>
+        <div id="post-list-container">加载中...</div>
+      </div>
+
+      <!-- Editor View (new / edit) -->
+      <div id="view-editor" class="view" style="display:none">
+        <div id="success-msg" class="success-msg"></div>
+        <div id="error-msg" class="error-msg"></div>
+
+        <input id="post-title" placeholder="文章标题" style="font-size:1.4rem;font-weight:700;font-family:serif;margin-bottom:1rem" />
+
+        <div class="row" style="margin-bottom:1rem">
+          <div>
+            <label>分类</label>
+            <select id="post-category">
+              <option value="poetry">诗歌</option>
+              <option value="diary">日记</option>
+              <option value="essay">散文</option>
+              <option value="photography">摄影</option>
+              <option value="music">音乐</option>
+            </select>
+          </div>
+          <div>
+            <label>情绪</label>
+            <select id="post-mood">
+              <option value="tranquil">静谧</option>
+              <option value="nostalgic">怀旧</option>
+              <option value="dreamy">梦幻</option>
+              <option value="warm">温暖</option>
+              <option value="melancholic">忧郁</option>
+            </select>
+          </div>
+          <div>
+            <label>日期</label>
+            <input type="date" id="post-date" />
+          </div>
+        </div>
+
+        <div class="checkbox-row" style="margin-bottom:1rem">
+          <label><input type="checkbox" id="post-featured" /> 精选（显示在首页）</label>
+          <label><input type="checkbox" id="post-draft" /> 草稿（不对外显示）</label>
+        </div>
+
+        <div style="margin-bottom:1rem">
+          <label>标签（回车添加）</label>
+          <div class="tags-wrap" id="tags-container">
+            <input type="text" id="tag-input" placeholder="输入标签..." />
+          </div>
+        </div>
+
+        <div style="margin-bottom:1rem">
+          <label>封面图片路径</label>
+          <div class="row">
+            <input id="post-image" placeholder="/images/posts/xxx.svg" style="flex:3" />
+            <button class="btn-secondary" id="btn-gen-cover" style="flex:1">生成 SVG 封面</button>
+          </div>
+        </div>
+        <div style="margin-bottom:1rem">
+          <label>图片替代文本</label>
+          <input id="post-imageAlt" placeholder="描述图片内容..." />
+        </div>
+
+        <div style="margin-bottom:1rem">
+          <label>摘要</label>
+          <textarea id="post-excerpt" rows="2" placeholder="文章摘要，会显示在卡片和搜索结果中..."></textarea>
+        </div>
+
+        <div style="margin-bottom:1rem">
+          <label>正文（Markdown）</label>
+          <div id="editor-area">
+            <textarea id="editor-textarea" placeholder="开始写作...&#10;&#10;支持 Markdown 语法：&#10;# 标题&#10;**粗体** *斜体*&#10;> 引用&#10;--- 分隔线"></textarea>
+            <div id="preview-pane"></div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:1rem;margin-top:1rem">
+          <button class="btn-primary" id="btn-save">保存草稿</button>
+          <button class="btn-primary" id="btn-publish" style="background:var(--deep-sky)">发布</button>
+          <button class="btn-secondary" onclick="switchView('list')">取消</button>
+        </div>
+        <input type="hidden" id="post-slug" />
+      </div>
+
+      <!-- Music View -->
+      <div id="view-music" class="view" style="display:none">
+        <h2 style="font-family:serif;font-size:1.5rem;margin-bottom:1.5rem">音乐管理</h2>
+        <div style="margin-bottom:2rem;padding:1.5rem;background:var(--bg-soft);border:1px solid var(--border-light);border-radius:4px">
+          <h3 style="margin-bottom:1rem;font-size:0.95rem">添加曲目</h3>
+          <div class="row" style="margin-bottom:0.75rem">
+            <input id="music-name" placeholder="曲目名称" />
+            <input id="music-src" placeholder="音频文件路径，如 /audio/xxx.flac" />
+            <input id="music-duration" placeholder="时长，如 04:30" style="max-width:100px" />
+          </div>
+          <button class="btn-primary" id="btn-add-music">添加曲目</button>
+        </div>
+        <div id="music-list">加载中...</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ========== State ==========
+    const CATEGORIES: Record<string, string> = { poetry: '诗歌', diary: '日记', essay: '散文', photography: '摄影', music: '音乐' };
+    const MOODS: Record<string, string> = { tranquil: '静谧', nostalgic: '怀旧', dreamy: '梦幻', warm: '温暖', melancholic: '忧郁' };
+    let currentView = 'list';
+    let editingSlug: string | null = null;
+    let tags: string[] = [];
+
+    // ========== Navigation ==========
+    function switchView(view: string) {
+      currentView = view;
+      document.querySelectorAll('#sidebar button[data-view]').forEach(b => b.classList.toggle('active', (b as HTMLElement).dataset.view === view));
+      document.querySelectorAll('.view').forEach((v) => (v as HTMLElement).style.display = 'none');
+      const target = document.getElementById('view-' + view);
+      if (target) (target as HTMLElement).style.display = 'block';
+      const toolbar = document.getElementById('toolbar-bar')!;
+      toolbar.style.display = (view === 'new' || view === 'editor') ? 'flex' : 'none';
+
+      if (view === 'list') loadPostList();
+      else if (view === 'new') resetEditor();
+      else if (view === 'music') loadMusic();
+    }
+
+    // ========== API helpers ==========
+    async function api(url: string, opts?: RequestInit) {
+      try {
+        const res = await fetch(url, opts);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return await res.json();
+      } catch (e: any) {
+        showError(e.message);
+        throw e;
+      }
+    }
+
+    // ========== Messages ==========
+    function showSuccess(msg: string) {
+      const el = document.getElementById('success-msg')!;
+      el.textContent = msg;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 3000);
+    }
+    function showError(msg: string) {
+      const el = document.getElementById('error-msg')!;
+      el.textContent = msg;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 3000);
+    }
+
+    // ========== Post List ==========
+    async function loadPostList() {
+      const container = document.getElementById('post-list-container')!;
+      try {
+        const posts = await api('/api/posts');
+        if (!posts.length) {
+          container.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:3rem">暂无文章，点击右上角"新建文章"开始</p>';
+          updateStats(0, 0, 0);
+          return;
+        }
+        let featured = 0, drafts = 0;
+        container.innerHTML = posts.map((p: any) => {
+          if (p.featured) featured++;
+          if (p.draft) drafts++;
+          const badges = [];
+          if (p.featured) badges.push('<span class="badge badge-featured">精选</span>');
+          if (p.draft) badges.push('<span class="badge badge-draft">草稿</span>');
+          return `<div class="post-item" data-slug="${p.slug}">
+            <div class="info">
+              <span class="title">${escHtml(p.title)}</span>
+              <span class="meta">${p.date} · ${CATEGORIES[p.category] || p.category} · ${MOODS[p.mood] || p.mood}</span>
+              ${badges.join(' ')}
+            </div>
+            <div class="actions">
+              <button onclick="event.stopPropagation();editPost('${p.slug}')">编辑</button>
+              <button class="danger" onclick="event.stopPropagation();deletePost('${p.slug}')">删除</button>
+            </div>
+          </div>`;
+        }).join('');
+
+        container.querySelectorAll('.post-item').forEach(el => {
+          el.addEventListener('click', () => editPost(el.getAttribute('data-slug')!));
+        });
+        updateStats(posts.length, featured, drafts);
+      } catch {
+        container.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:3rem">加载失败</p>';
+      }
+    }
+
+    function updateStats(total: number, featured: number, drafts: number) {
+      document.getElementById('stats')!.innerHTML = `共 ${total} 篇<br>精选 ${featured} · 草稿 ${drafts}`;
+    }
+
+    // ========== Editor ==========
+    function resetEditor() {
+      editingSlug = null;
+      tags = [];
+      (document.getElementById('post-title') as HTMLInputElement).value = '';
+      (document.getElementById('post-date') as HTMLInputElement).value = new Date().toISOString().split('T')[0];
+      (document.getElementById('post-category') as HTMLSelectElement).value = 'essay';
+      (document.getElementById('post-mood') as HTMLSelectElement).value = 'tranquil';
+      (document.getElementById('post-featured') as HTMLInputElement).checked = false;
+      (document.getElementById('post-draft') as HTMLInputElement).checked = false;
+      (document.getElementById('post-excerpt') as HTMLTextAreaElement).value = '';
+      (document.getElementById('post-image') as HTMLInputElement).value = '';
+      (document.getElementById('post-imageAlt') as HTMLInputElement).value = '';
+      (document.getElementById('post-slug') as HTMLInputElement).value = '';
+      (document.getElementById('editor-textarea') as HTMLTextAreaElement).value = '';
+      (document.getElementById('preview-pane')!).innerHTML = '';
+      (document.getElementById('tag-input') as HTMLInputElement).value = '';
+      renderTags();
+      updatePreview();
+      switchView('editor');
+    }
+
+    async function editPost(slug: string) {
+      try {
+        const posts = await api('/api/posts');
+        const post = posts.find((p: any) => p.slug === slug);
+        if (!post) { showError('文章未找到'); return; }
+        editingSlug = slug;
+        tags = post.tags || [];
+        (document.getElementById('post-title') as HTMLInputElement).value = post.title || '';
+        (document.getElementById('post-date') as HTMLInputElement).value = post.date || '';
+        (document.getElementById('post-category') as HTMLSelectElement).value = post.category || 'essay';
+        (document.getElementById('post-mood') as HTMLSelectElement).value = post.mood || 'tranquil';
+        (document.getElementById('post-featured') as HTMLInputElement).checked = !!post.featured;
+        (document.getElementById('post-draft') as HTMLInputElement).checked = !!post.draft;
+        (document.getElementById('post-excerpt') as HTMLTextAreaElement).value = post.excerpt || '';
+        (document.getElementById('post-image') as HTMLInputElement).value = post.image || '';
+        (document.getElementById('post-imageAlt') as HTMLInputElement).value = post.imageAlt || '';
+        (document.getElementById('post-slug') as HTMLInputElement).value = slug;
+        (document.getElementById('editor-textarea') as HTMLTextAreaElement).value = post.body || '';
+        renderTags();
+        updatePreview();
+        switchView('editor');
+      } catch { /* error already shown */ }
+    }
+
+    async function savePost(draft: boolean) {
+      const title = (document.getElementById('post-title') as HTMLInputElement).value.trim();
+      if (!title) { showError('请输入文章标题'); return; }
+
+      let slug = (document.getElementById('post-slug') as HTMLInputElement).value.trim();
+      if (!slug) {
+        // Auto-generate slug from title (simple pinyin-like, actually just use a slug from title)
+        slug = title.replace(/[^\w一-鿿]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '').toLowerCase();
+        if (!slug) slug = 'post-' + Date.now();
+        (document.getElementById('post-slug') as HTMLInputElement).value = slug;
+      }
+
+      const frontmatter = {
+        title,
+        date: (document.getElementById('post-date') as HTMLInputElement).value,
+        excerpt: (document.getElementById('post-excerpt') as HTMLTextAreaElement).value.trim(),
+        category: (document.getElementById('post-category') as HTMLSelectElement).value,
+        mood: (document.getElementById('post-mood') as HTMLSelectElement).value,
+        image: (document.getElementById('post-image') as HTMLInputElement).value.trim() || `/images/posts/${slug}.svg`,
+        imageAlt: (document.getElementById('post-imageAlt') as HTMLInputElement).value.trim(),
+        tags: tags.length > 0 ? tags : undefined,
+        featured: (document.getElementById('post-featured') as HTMLInputElement).checked,
+        draft,
+      };
+
+      const body = (document.getElementById('editor-textarea') as HTMLTextAreaElement).value;
+      const method = editingSlug ? 'PUT' : 'POST';
+
+      try {
+        await api('/api/posts', {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ slug, frontmatter, body }),
+        });
+        showSuccess(draft ? `草稿已保存 (${slug}.mdx)` : `文章已发布 (${slug}.mdx)`);
+        editingSlug = slug;
+        (document.getElementById('post-slug') as HTMLInputElement).value = slug;
+      } catch { /* error already shown */ }
+    }
+
+    async function deletePost(slug: string) {
+      if (!confirm(`确定要删除文章 "${slug}" 吗？此操作不可撤销。`)) return;
+      try {
+        await api(`/api/posts?slug=${encodeURIComponent(slug)}`, { method: 'DELETE' });
+        showSuccess(`已删除: ${slug}`);
+        loadPostList();
+      } catch { /* error already shown */ }
+    }
+
+    // ========== Tags ==========
+    function renderTags() {
+      const container = document.getElementById('tags-container')!;
+      const input = document.getElementById('tag-input') as HTMLInputElement;
+      const currentInput = input.value;
+      container.innerHTML = '';
+      tags.forEach((tag, i) => {
+        const pill = document.createElement('span');
+        pill.className = 'tag-pill';
+        pill.innerHTML = `${escHtml(tag)} <span class="x">&times;</span>`;
+        pill.querySelector('.x')!.addEventListener('click', () => { tags.splice(i, 1); renderTags(); });
+        container.appendChild(pill);
+      });
+      const newInput = document.createElement('input');
+      newInput.type = 'text';
+      newInput.id = 'tag-input';
+      newInput.placeholder = tags.length === 0 ? '输入标签...' : '+ 添加';
+      newInput.value = currentInput;
+      newInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const val = (e.target as HTMLInputElement).value.trim();
+          if (val && !tags.includes(val)) { tags.push(val); renderTags(); }
+        }
+        if (e.key === 'Backspace' && (e.target as HTMLInputElement).value === '' && tags.length > 0) {
+          tags.pop();
+          renderTags();
+        }
+      });
+      container.appendChild(newInput);
+      (document.getElementById('tag-input') as HTMLInputElement)?.focus();
+    }
+
+    // ========== Markdown Preview ==========
+    const editorTextarea = document.getElementById('editor-textarea') as HTMLTextAreaElement;
+    const previewPane = document.getElementById('preview-pane')!;
+
+    function simpleMarkdown(text: string): string {
+      let html = text
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        // Headers
+        .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+        .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+        .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+        // Bold, italic
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.+?)\*/g, '<em>$1</em>')
+        // Images
+        .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" />')
+        // Links
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
+        // Blockquote
+        .replace(/^> (.+)$/gm, (_, content) => {
+          const inner = content.replace(/<\/?[^>]+(>|$)/g, '');
+          return `<blockquote>${inner}</blockquote>`;
+        })
+        // HR
+        .replace(/^---$/gm, '<hr />')
+        // Unordered list
+        .replace(/^- (.+)$/gm, '<li>$1</li>')
+        // Paragraphs (double newline)
+        .split(/\n\n+/).map(block => {
+          const trimmed = block.trim();
+          if (!trimmed) return '';
+          if (/^<(h[1-3]|blockquote|hr|ul|ol|li|img)/.test(trimmed)) return trimmed;
+          if (/^<li>/.test(trimmed)) return `<ul>${trimmed}</ul>`;
+          return `<p>${trimmed.replace(/\n/g, '<br/>')}</p>`;
+        }).join('\n');
+      return html;
+    }
+
+    function updatePreview() {
+      previewPane.innerHTML = simpleMarkdown(editorTextarea.value) || '<p style="color:var(--text-muted);font-style:italic">预览区域...</p>';
+    }
+
+    editorTextarea.addEventListener('input', updatePreview);
+
+    // ========== Toolbar ==========
+    document.getElementById('toolbar-bar')!.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement).closest('button[data-md]') as HTMLButtonElement | null;
+      if (!btn) return;
+      const md = btn.dataset.md!;
+      const ta = editorTextarea;
+      const start = ta.selectionStart;
+      const end = ta.selectionEnd;
+      const text = ta.value;
+      const selected = text.substring(start, end);
+
+      let replacement: string;
+      let cursorOffset: number;
+
+      if (md === '**bold**') {
+        replacement = selected ? `**${selected}**` : '**粗体**';
+        cursorOffset = selected ? replacement.length : 2;
+      } else if (md === '*italic*') {
+        replacement = selected ? `*${selected}*` : '*斜体*';
+        cursorOffset = selected ? replacement.length : 1;
+      } else if (md.startsWith('#')) {
+        const lineStart = text.lastIndexOf('\n', start - 1) + 1;
+        replacement = md + text.substring(lineStart, end || start);
+        ta.setSelectionRange(lineStart, end || start);
+        cursorOffset = replacement.length;
+      } else if (md === '> ' || md === '- ') {
+        replacement = md + (selected || text.substring(text.lastIndexOf('\n', start - 1) + 1, end || start));
+        const lineStart = text.lastIndexOf('\n', start - 1) + 1;
+        ta.setSelectionRange(lineStart, end || start);
+        cursorOffset = replacement.length;
+      } else if (md === '---') {
+        replacement = '\n---\n';
+        cursorOffset = 0;
+      } else {
+        replacement = md;
+        cursorOffset = 0;
+      }
+
+      ta.setRangeText(replacement, ta.selectionStart, ta.selectionEnd, 'end');
+      ta.focus();
+      updatePreview();
+    });
+
+    // Toggle preview
+    let previewVisible = false;
+    document.getElementById('btn-preview')!.addEventListener('click', () => {
+      previewVisible = !previewVisible;
+      const editorArea = document.getElementById('editor-area')!;
+      const ta = editorTextarea;
+      const pp = previewPane;
+      if (previewVisible) {
+        ta.style.display = 'none';
+        pp.style.flex = '1';
+        pp.style.borderLeft = '1px solid var(--border-light)';
+      } else {
+        ta.style.display = '';
+        pp.style.flex = '1';
+        pp.style.borderLeft = 'none';
+      }
+    });
+
+    // Image button
+    document.getElementById('btn-image')!.addEventListener('click', () => {
+      const url = prompt('输入图片 URL（或粘贴剪贴板中的图片路径):', '/images/posts/');
+      if (url) {
+        const ta = editorTextarea;
+        ta.setRangeText(`![图片](${url})`, ta.selectionStart, ta.selectionEnd, 'end');
+        ta.focus();
+        updatePreview();
+      }
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (currentView !== 'editor' && currentView !== 'new') return;
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        savePost(true);
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key === 'b') {
+        e.preventDefault();
+        const ta = editorTextarea;
+        const s = ta.value.substring(ta.selectionStart, ta.selectionEnd) || '粗体';
+        ta.setRangeText(`**${s}**`, ta.selectionStart, ta.selectionEnd, 'end');
+        updatePreview();
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key === 'i') {
+        e.preventDefault();
+        const ta = editorTextarea;
+        const s = ta.value.substring(ta.selectionStart, ta.selectionEnd) || '斜体';
+        ta.setRangeText(`*${s}*`, ta.selectionStart, ta.selectionEnd, 'end');
+        updatePreview();
+      }
+    });
+
+    // Paste image
+    document.addEventListener('paste', (e) => {
+      if (currentView !== 'editor' && currentView !== 'new') return;
+      const items = e.clipboardData?.items;
+      if (!items) return;
+      for (const item of items) {
+        if (item.type.startsWith('image/')) {
+          e.preventDefault();
+          const blob = item.getAsFile();
+          if (!blob) continue;
+          const reader = new FileReader();
+          reader.onload = () => {
+            const ta = editorTextarea;
+            ta.setRangeText(`![图片](${reader.result})`, ta.selectionStart, ta.selectionEnd, 'end');
+            ta.focus();
+            updatePreview();
+          };
+          reader.readAsDataURL(blob);
+        }
+      }
+    });
+
+    // Generate SVG cover
+    document.getElementById('btn-gen-cover')!.addEventListener('click', async () => {
+      const title = (document.getElementById('post-title') as HTMLInputElement).value.trim();
+      if (!title) { showError('请先输入文章标题'); return; }
+      const category = (document.getElementById('post-category') as HTMLSelectElement).value;
+      const mood = (document.getElementById('post-mood') as HTMLSelectElement).value;
+      let slug = (document.getElementById('post-slug') as HTMLInputElement).value.trim();
+      if (!slug) {
+        slug = title.replace(/[^\w一-鿿]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '').toLowerCase();
+        if (!slug) slug = 'post-' + Date.now();
+        (document.getElementById('post-slug') as HTMLInputElement).value = slug;
+      }
+      try {
+        const result = await api('/api/images', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title, category, mood, filename: slug }),
+        });
+        (document.getElementById('post-image') as HTMLInputElement).value = result.path;
+        showSuccess('SVG 封面已生成: ' + result.path);
+      } catch { /* error already shown */ }
+    });
+
+    // Save buttons
+    document.getElementById('btn-save')!.addEventListener('click', () => savePost(true));
+    document.getElementById('btn-publish')!.addEventListener('click', () => savePost(false));
+
+    // ========== Music ==========
+    async function loadMusic() {
+      const container = document.getElementById('music-list')!;
+      try {
+        const tracks = await api('/api/music');
+        if (!tracks.length) {
+          container.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:2rem">播放列表为空</p>';
+          return;
+        }
+        container.innerHTML = tracks.map((t: any, i: number) =>
+          `<div class="track-item">
+            <span><span class="name">${escHtml(t.name)}</span><span class="dur">${t.duration}</span></span>
+            <span style="font-size:0.72rem;color:var(--text-muted)">${escHtml(t.src)}</span>
+            <button class="btn-secondary" style="padding:3px 10px;font-size:0.72rem" onclick="removeTrack(${i})">删除</button>
+          </div>`
+        ).join('');
+      } catch {
+        container.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:2rem">加载失败</p>';
+      }
+    }
+
+    async function addTrack() {
+      const name = (document.getElementById('music-name') as HTMLInputElement).value.trim();
+      const src = (document.getElementById('music-src') as HTMLInputElement).value.trim();
+      const duration = (document.getElementById('music-duration') as HTMLInputElement).value.trim();
+      if (!name || !src || !duration) { showError('请填写所有字段'); return; }
+      try {
+        await api('/api/music', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, src, duration }),
+        });
+        showSuccess('曲目已添加');
+        (document.getElementById('music-name') as HTMLInputElement).value = '';
+        (document.getElementById('music-src') as HTMLInputElement).value = '';
+        (document.getElementById('music-duration') as HTMLInputElement).value = '';
+        loadMusic();
+      } catch { /* error already shown */ }
+    }
+
+    async function removeTrack(index: number) {
+      if (!confirm('确定删除这首曲目？')) return;
+      try {
+        await api(`/api/music?index=${index}`, { method: 'DELETE' });
+        showSuccess('曲目已删除');
+        loadMusic();
+      } catch { /* error already shown */ }
+    }
+
+    document.getElementById('btn-add-music')!.addEventListener('click', addTrack);
+
+    // ========== Utility ==========
+    function escHtml(s: string): string {
+      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    // Declare global functions for onclick handlers
+    (window as any).switchView = switchView;
+    (window as any).editPost = editPost;
+    (window as any).deletePost = deletePost;
+    (window as any).removeTrack = removeTrack;
+
+    // ========== Init ==========
+    loadPostList();
+    updatePreview();
+  </script>
+</body>
+</html>

@@ -24,7 +24,11 @@
       "Bash(xxd \"src/components/ui/MusicPlayer.astro\")",
       "Bash(curl -s http://localhost:4321/about/)",
       "Bash(curl -s http://localhost:4321/posts/)",
-      "Bash(curl -s http://localhost:4321/posts/starry-summer/)"
+      "Bash(curl -s http://localhost:4321/posts/starry-summer/)",
+      "Bash(curl -s http://localhost:4321/api/posts)",
+      "Bash(curl -s http://localhost:4321/api/music)",
+      "Bash(curl -s http://localhost:4321/manage/)",
+      "Bash(curl *)"
     ]
   }
 }
