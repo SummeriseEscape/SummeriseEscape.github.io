@@ -8,9 +8,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 npm run dev        # Start dev server (Astro)
 npm run build      # Production build to ./dist
 npm run preview    # Preview production build
+npm run manage     # Start dev server + open /manage in browser
 ```
 
 No test suite or linting is configured.
+
+**Important**: API routes (`src/pages/api/*.ts`) do NOT hot-reload. After modifying an API route, kill the dev server and restart with `npm run dev` for changes to take effect.
+
+`manage.bat` in the project root is a Windows shortcut — double-click to start the dev server and open the management tool.
 
 ## Architecture
 
@@ -27,7 +32,7 @@ Posts are MDX files in `src/content/posts/`. Each post has a Zod-validated front
 | `updated` | date | Optional |
 | `excerpt` | string | Required |
 | `category` | enum | `poetry` / `diary` / `essay` / `photography` / `music` |
-| `mood` | enum | `tranquil` / `nostalgic` / `dreamy` / `warm` / `melancholic` |
+| `mood` | string | Free-form text. Common values: `tranquil`(静谧) `nostalgic`(怀旧) `dreamy`(梦幻) `warm`(温暖) `melancholic`(忧郁) |
 | `image` | string | Path to post cover image |
 | `imageAlt` | string | Required |
 | `tags` | string[] | Optional |
@@ -86,6 +91,38 @@ Additionally, `Starfield.astro` uses `starfield.ts` (custom canvas class) for th
 ### Aliases
 
 `@/*` maps to `src/*` (configured in `tsconfig.json` paths and resolved by Astro/Vite).
+
+## Manage tool (`/manage`)
+
+A standalone content management page at `/manage` (no BaseLayout, its own HTML shell). Used to create/edit posts and manage the music playlist. Operates entirely on local files — changes go to `src/content/posts/`, `public/images/posts/`, `public/audio/`, and `src/components/ui/MusicPlayer.astro` on disk. After making changes locally, `git commit && git push` triggers the GitHub Actions deploy.
+
+### API routes (local dev only)
+
+These are Astro API routes that directly read/write project files. They only work in dev mode (`npm run dev`), not in the static build.
+
+| Endpoint | File | Purpose |
+|----------|------|---------|
+| `GET/POST/PUT/DELETE /api/posts` | `src/pages/api/posts.ts` | CRUD for `.mdx` files in `src/content/posts/` |
+| `GET/POST/DELETE /api/music` | `src/pages/api/music.ts` | Read/write the playlist array inside `MusicPlayer.astro` |
+| `POST /api/images` | `src/pages/api/images.ts` | Generate SVG cover images |
+| `POST /api/upload` | `src/pages/api/upload.ts` | Raw binary file upload — copies to `public/images/posts/` or `public/audio/` |
+
+### File upload mechanism
+
+`/api/upload` uses **raw binary body** (not multipart). The client sends `File` directly as `fetch` body with custom headers for metadata:
+
+```
+Client: fetch('/api/upload', { method:'POST',
+          headers:{ 'X-Upload-Type':'image', 'X-Upload-Name': encodeURIComponent(file.name) },
+          body: file })
+Server: request.headers.get('x-upload-type') + request.arrayBuffer() → writeFile
+```
+
+This avoids all multipart/form-data parsing issues in Astro's dev server. No MIME validation — the user explicitly picks the file, it gets copied as-is.
+
+### `scripts/start-manage.js`
+
+Launches the dev server, polls `localhost:4321` until ready, then opens `/manage` in the browser. Called by `npm run manage` and `manage.bat`.
 
 ## Adding a new post
 

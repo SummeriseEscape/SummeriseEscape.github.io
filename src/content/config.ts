@@ -8,11 +8,11 @@ const postsCollection = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),                                                            // 文章标题
-    date: z.date(),                                                               // 发布日期
+    date: z.coerce.date(),                                                        // 发布日期
     updated: z.date().optional(),                                                  // 最后更新日期（可选）
     excerpt: z.string(),                                                          // 文章摘要，显示在卡片和 SEO 描述中
     category: z.enum(['poetry', 'diary', 'essay', 'photography', 'music']),       // 分类：poetry=诗歌 diary=日记 essay=散文 photography=摄影 music=音乐
-    mood: z.enum(['tranquil', 'nostalgic', 'dreamy', 'warm', 'melancholic']),     // 情绪：tranquil=静谧 nostalgic=怀旧 dreamy=梦幻 warm=温暖 melancholic=忧郁
+    mood: z.string(),                                                               // 情绪：自定义文本，常用值 tranquil=静谧 nostalgic=怀旧 dreamy=梦幻 warm=温暖 melancholic=忧郁
     image: z.string(),                                                            // 封面图片路径，例如 '/images/posts/xxx.jpg'
     imageAlt: z.string(),                                                         // 封面图片的替代文本（无障碍）
     tags: z.array(z.string()).optional(),                                          // 标签列表（可选），例如 ['夏天', '星空']

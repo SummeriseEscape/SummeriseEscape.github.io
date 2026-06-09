@@ -53,14 +53,7 @@
           ]
         },
         "mood": {
-          "type": "string",
-          "enum": [
-            "tranquil",
-            "nostalgic",
-            "dreamy",
-            "warm",
-            "melancholic"
-          ]
+          "type": "string"
         },
         "image": {
           "type": "string"

@@ -274,13 +274,14 @@
           </div>
           <div>
             <label>情绪</label>
-            <select id="post-mood">
+            <input type="text" id="post-mood" list="mood-list" placeholder="输入情绪，如 静谧、感伤..." autocomplete="off" />
+            <datalist id="mood-list">
               <option value="tranquil">静谧</option>
               <option value="nostalgic">怀旧</option>
               <option value="dreamy">梦幻</option>
               <option value="warm">温暖</option>
               <option value="melancholic">忧郁</option>
-            </select>
+            </datalist>
           </div>
           <div>
             <label>日期</label>
@@ -304,6 +305,7 @@
           <label>封面图片路径</label>
           <div class="row">
             <input id="post-image" placeholder="/images/posts/xxx.svg" style="flex:3" />
+            <button class="btn-secondary" id="btn-upload-image" style="flex:1">📁 上传图片</button>
             <button class="btn-secondary" id="btn-gen-cover" style="flex:1">生成 SVG 封面</button>
           </div>
         </div>
@@ -340,7 +342,10 @@
           <h3 style="margin-bottom:1rem;font-size:0.95rem">添加曲目</h3>
           <div class="row" style="margin-bottom:0.75rem">
             <input id="music-name" placeholder="曲目名称" />
-            <input id="music-src" placeholder="音频文件路径，如 /audio/xxx.flac" />
+            <div style="display:flex;gap:0.3rem;flex:1;min-width:200px">
+              <input id="music-src" placeholder="音频文件路径，如 /audio/xxx.flac" style="flex:1" />
+              <button class="btn-secondary" id="btn-upload-audio" style="white-space:nowrap;flex:0">📁 上传音频</button>
+            </div>
             <input id="music-duration" placeholder="时长，如 04:30" style="max-width:100px" />
           </div>
           <button class="btn-primary" id="btn-add-music">添加曲目</button>
@@ -377,13 +382,70 @@
     async function api(url: string, opts?: RequestInit) {
       try {
         const res = await fetch(url, opts);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        if (!res.ok) {
+          let msg = `HTTP ${res.status}`;
+          try {
+            const body = await res.json();
+            if (body.error) msg = body.error;
+          } catch {}
+          throw new Error(msg);
+        }
         return await res.json();
       } catch (e: any) {
         showError(e.message);
         throw e;
       }
     }
+
+    // ========== File upload ==========
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.style.display = 'none';
+    document.body.appendChild(fileInput);
+
+    async function uploadFile(file: File, type: 'image' | 'audio'): Promise<string> {
+      const res = await fetch(`/api/upload?type=${type}&name=${encodeURIComponent(file.name)}`, {
+        method: 'POST',
+        body: file,
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || `HTTP ${res.status}`);
+      }
+      return (await res.json()).path;
+    }
+
+    function pickFile(target: string, accept: string) {
+      fileInput.dataset.target = target;
+      fileInput.accept = accept;
+      fileInput.click();
+    }
+
+    fileInput.addEventListener('change', async () => {
+      const file = fileInput.files?.[0];
+      if (!file) return;
+      const target = fileInput.dataset.target || '';
+      try {
+        if (target === 'cover') {
+          const path = await uploadFile(file, 'image');
+          (document.getElementById('post-image') as HTMLInputElement).value = path;
+          showSuccess('封面已上传: ' + path);
+        } else if (target === 'audio') {
+          const path = await uploadFile(file, 'audio');
+          (document.getElementById('music-src') as HTMLInputElement).value = path;
+          showSuccess('音频已上传: ' + path);
+        } else if (target === 'editor') {
+          const path = await uploadFile(file, 'image');
+          editorTextarea.setRangeText(`![图片](${path})`, editorTextarea.selectionStart, editorTextarea.selectionEnd, 'end');
+          editorTextarea.focus();
+          updatePreview();
+          showSuccess('图片已插入: ' + path);
+        }
+      } catch (e: any) {
+        showError(e.message);
+      }
+      fileInput.value = '';
+    });
 
     // ========== Messages ==========
     function showSuccess(msg: string) {
@@ -449,7 +511,7 @@
       (document.getElementById('post-title') as HTMLInputElement).value = '';
       (document.getElementById('post-date') as HTMLInputElement).value = new Date().toISOString().split('T')[0];
       (document.getElementById('post-category') as HTMLSelectElement).value = 'essay';
-      (document.getElementById('post-mood') as HTMLSelectElement).value = 'tranquil';
+      (document.getElementById('post-mood') as HTMLInputElement).value = 'tranquil';
       (document.getElementById('post-featured') as HTMLInputElement).checked = false;
       (document.getElementById('post-draft') as HTMLInputElement).checked = false;
       (document.getElementById('post-excerpt') as HTMLTextAreaElement).value = '';
@@ -474,7 +536,7 @@
         (document.getElementById('post-title') as HTMLInputElement).value = post.title || '';
         (document.getElementById('post-date') as HTMLInputElement).value = post.date || '';
         (document.getElementById('post-category') as HTMLSelectElement).value = post.category || 'essay';
-        (document.getElementById('post-mood') as HTMLSelectElement).value = post.mood || 'tranquil';
+        (document.getElementById('post-mood') as HTMLInputElement).value = post.mood || 'tranquil';
         (document.getElementById('post-featured') as HTMLInputElement).checked = !!post.featured;
         (document.getElementById('post-draft') as HTMLInputElement).checked = !!post.draft;
         (document.getElementById('post-excerpt') as HTMLTextAreaElement).value = post.excerpt || '';
@@ -505,7 +567,7 @@
         date: (document.getElementById('post-date') as HTMLInputElement).value,
         excerpt: (document.getElementById('post-excerpt') as HTMLTextAreaElement).value.trim(),
         category: (document.getElementById('post-category') as HTMLSelectElement).value,
-        mood: (document.getElementById('post-mood') as HTMLSelectElement).value,
+        mood: (document.getElementById('post-mood') as HTMLInputElement).value,
         image: (document.getElementById('post-image') as HTMLInputElement).value.trim() || `/images/posts/${slug}.svg`,
         imageAlt: (document.getElementById('post-imageAlt') as HTMLInputElement).value.trim(),
         tags: tags.length > 0 ? tags : undefined,
@@ -675,15 +737,9 @@
       }
     });
 
-    // Image button
+    // Image button — pick file, upload, insert markdown at cursor
     document.getElementById('btn-image')!.addEventListener('click', () => {
-      const url = prompt('输入图片 URL（或粘贴剪贴板中的图片路径):', '/images/posts/');
-      if (url) {
-        const ta = editorTextarea;
-        ta.setRangeText(`![图片](${url})`, ta.selectionStart, ta.selectionEnd, 'end');
-        ta.focus();
-        updatePreview();
-      }
+      pickFile('editor', 'image/png,image/jpeg,image/gif,image/webp,image/svg+xml');
     });
 
     // Keyboard shortcuts
@@ -731,12 +787,18 @@
       }
     });
 
+    // File upload buttons — pick file, upload, fill target field
+    document.getElementById('btn-upload-image')!.addEventListener('click', () =>
+      pickFile('cover', 'image/png,image/jpeg,image/gif,image/webp,image/svg+xml'));
+    document.getElementById('btn-upload-audio')!.addEventListener('click', () =>
+      pickFile('audio', '.flac,.mp3,.ogg,.wav,.m4a,.aac'));
+
     // Generate SVG cover
     document.getElementById('btn-gen-cover')!.addEventListener('click', async () => {
       const title = (document.getElementById('post-title') as HTMLInputElement).value.trim();
       if (!title) { showError('请先输入文章标题'); return; }
       const category = (document.getElementById('post-category') as HTMLSelectElement).value;
-      const mood = (document.getElementById('post-mood') as HTMLSelectElement).value;
+      const mood = (document.getElementById('post-mood') as HTMLInputElement).value;
       let slug = (document.getElementById('post-slug') as HTMLInputElement).value.trim();
       if (!slug) {
         slug = title.replace(/[^\w一-鿿]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '').toLowerCase();
