@@ -415,31 +415,58 @@
       return (await res.json()).path;
     }
 
+    // 图片缩放（Canvas API，限制最大宽度 1200px）
+    async function resizeImage(file: File, maxWidth = 1200, quality = 0.85): Promise<Blob> {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => {
+          if (img.width <= maxWidth) return resolve(file); // 无需缩放
+          const ratio = maxWidth / img.width;
+          const canvas = document.createElement('canvas');
+          canvas.width = maxWidth;
+          canvas.height = Math.round(img.height * ratio);
+          const ctx = canvas.getContext('2d')!;
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          canvas.toBlob((blob) => {
+            if (blob) resolve(blob);
+            else reject(new Error('缩放失败'));
+          }, file.type || 'image/jpeg', quality);
+        };
+        img.onerror = () => reject(new Error('图片加载失败'));
+        img.src = URL.createObjectURL(file);
+      });
+    }
+
     function pickFile(target: string, accept: string) {
       fileInput.dataset.target = target;
       fileInput.accept = accept;
+      fileInput.multiple = (target === 'editor');
       fileInput.click();
     }
 
     fileInput.addEventListener('change', async () => {
-      const file = fileInput.files?.[0];
-      if (!file) return;
+      const files = fileInput.files;
+      if (!files || files.length === 0) return;
       const target = fileInput.dataset.target || '';
       try {
         if (target === 'cover') {
-          const path = await uploadFile(file, 'image');
+          const path = await uploadFile(files[0], 'image');
           (document.getElementById('post-image') as HTMLInputElement).value = path;
           showSuccess('封面已上传: ' + path);
         } else if (target === 'audio') {
-          const path = await uploadFile(file, 'audio');
+          const path = await uploadFile(files[0], 'audio');
           (document.getElementById('music-src') as HTMLInputElement).value = path;
           showSuccess('音频已上传: ' + path);
         } else if (target === 'editor') {
-          const path = await uploadFile(file, 'image');
-          editorTextarea.setRangeText(`![图片](${path})`, editorTextarea.selectionStart, editorTextarea.selectionEnd, 'end');
+          for (let i = 0; i < files.length; i++) {
+            const resized = await resizeImage(files[i]);
+            const blob = resized === files[i] ? files[i] : resized;
+            const path = await uploadFile(new File([blob], files[i].name, { type: blob.type }), 'image');
+            editorTextarea.setRangeText(`![图片](${path})\n`, editorTextarea.selectionStart, editorTextarea.selectionEnd, 'end');
+            updatePreview();
+          }
           editorTextarea.focus();
-          updatePreview();
-          showSuccess('图片已插入: ' + path);
+          showSuccess(`${files.length} 张图片已插入`);
         }
       } catch (e: any) {
         showError(e.message);

@@ -15,8 +15,8 @@ export const POST: APIRoute = async ({ request }) => {
   // Handled by Vite middleware in dev; this is a build-time fallback
   const body = await request.json() as { slug: string; frontmatter: any; body: string };
   const { slug, frontmatter, body: postBody } = body;
-  if (!slug || !/^[a-z0-9-]+$/.test(slug)) {
-    return new Response(JSON.stringify({ error: 'Slug 只能包含小写字母、数字和连字符' }), { status: 400 });
+  if (!slug || !/^[\w一-鿿-]+$/.test(slug)) {
+    return new Response(JSON.stringify({ error: 'Slug 包含无效字符' }), { status: 400 });
   }
   await writePostToFile(slug, dataToFrontmatter(frontmatter), postBody);
   return new Response(JSON.stringify({ success: true, slug }), {
