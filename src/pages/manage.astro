@@ -139,31 +139,80 @@
     .tag-pill:hover .x { opacity: 1; }
     #tag-input { width: 100px; padding: 0.3rem 0.5rem; font-size: 0.78rem; border: none; background: transparent; }
     #tag-input:focus { outline: none; }
-    /* Editor */
-    #editor-area { display: flex; gap: 0; flex: 1; min-height: 400px; }
-    #editor-area textarea {
-      flex: 1; min-height: 100%; resize: none; border-radius: 0;
-      font-family: 'TW Kai', serif; font-size: 1rem; line-height: 1.75;
-      padding: 1.5rem; border: 1px solid var(--border-light);
+    /* Editor - Milkdown WYSIWYG */
+    #editor-area { min-height: 400px; }
+    #milkdown-editor {
+      min-height: 400px;
+      border: 1px solid var(--border-light);
+      border-radius: 3px;
+      background: var(--bg-soft);
     }
-    #preview-pane {
-      flex: 1; padding: 1.5rem; overflow-y: auto;
-      border: 1px solid var(--border-light); border-left: none;
-      font-family: 'TW Kai', serif; font-size: 1rem; line-height: 1.75;
-      color: var(--text-primary); background: #fdfdfc;
+    /* :global() needed because ProseMirror DOM is created dynamically by Milkdown */
+    #milkdown-editor :global(.ProseMirror) {
+      padding: 1.5rem;
+      min-height: 400px;
+      outline: none;
+      font-family: 'TW Kai', serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--text-primary);
     }
-    #preview-pane h1 { font-size: 1.6rem; margin-bottom: 0.8em; }
-    #preview-pane h2 { font-size: 1.3rem; margin-bottom: 0.7em; }
-    #preview-pane p { margin-bottom: 1.2em; color: var(--text-secondary); }
-    #preview-pane blockquote {
-      margin: 1em 0; padding: 0.6em 1em;
-      border-left: 2px solid var(--breeze-blue);
+    #milkdown-editor :global(.ProseMirror h1) { font-size: 1.8rem; font-weight: 700; margin: 0.8em 0 0.3em; font-family: serif; }
+    #milkdown-editor :global(.ProseMirror h2) { font-size: 1.4rem; font-weight: 700; margin: 0.7em 0 0.25em; font-family: serif; }
+    #milkdown-editor :global(.ProseMirror h3) { font-size: 1.15rem; font-weight: 700; margin: 0.6em 0 0.2em; font-family: serif; }
+    #milkdown-editor :global(.ProseMirror h4) { font-size: 1.05rem; font-weight: 600; margin: 0.5em 0 0.15em; font-family: serif; }
+    #milkdown-editor :global(.ProseMirror p) { margin: 0 0 0.4em; color: var(--text-secondary); }
+    #milkdown-editor :global(.ProseMirror strong) { color: var(--text-primary); font-weight: 700; }
+    #milkdown-editor :global(.ProseMirror em) { font-style: italic; }
+    #milkdown-editor :global(.ProseMirror s) { text-decoration: line-through; opacity: 0.7; }
+    #milkdown-editor :global(.ProseMirror blockquote) {
+      margin: 0.6em 0; padding: 0.5em 1em;
+      border-left: 3px solid var(--breeze-blue);
       background: var(--bg-soft); font-style: italic; color: var(--text-secondary);
     }
-    #preview-pane strong { color: var(--text-primary); }
-    #preview-pane hr { margin: 1.5em 0; border: 0; height: 1px; background: var(--border-light); }
-    #preview-pane img { max-width: 100%; }
-    #preview-pane code { background: var(--bg-soft); padding: 1px 5px; border-radius: 3px; font-size: 0.9em; }
+    #milkdown-editor :global(.ProseMirror hr) { margin: 1em 0; border: 0; height: 1px; background: var(--border-light); }
+    #milkdown-editor :global(.ProseMirror img) { max-width: 100%; }
+    #milkdown-editor :global(.ProseMirror code) {
+      background: var(--bg-soft); padding: 1px 6px; border-radius: 3px; font-size: 0.9em;
+      font-family: 'Fira Code', 'Cascadia Code', monospace;
+    }
+    #milkdown-editor :global(.ProseMirror pre) {
+      background: var(--night-blue); color: #e0e0e0; padding: 1rem 1.5rem;
+      border-radius: 4px; overflow-x: auto; margin: 0.6em 0; font-size: 0.88rem; line-height: 1.5;
+    }
+    #milkdown-editor :global(.ProseMirror pre code) { background: none; padding: 0; font-size: inherit; color: inherit; }
+    #milkdown-editor :global(.ProseMirror table) {
+      border-collapse: collapse; width: 100%; margin: 0.6em 0; font-size: 0.9rem;
+    }
+    #milkdown-editor :global(.ProseMirror th) {
+      background: var(--bg-soft); font-weight: 600; border: 1px solid var(--border-light);
+      padding: 0.5rem 0.75rem; text-align: left;
+    }
+    #milkdown-editor :global(.ProseMirror td) {
+      border: 1px solid var(--border-light); padding: 0.5rem 0.75rem;
+    }
+    #milkdown-editor :global(.ProseMirror ul),
+    #milkdown-editor :global(.ProseMirror ul),
+    #milkdown-editor :global(.ProseMirror ol) { padding-left: 2rem; margin: 0.3em 0; }
+    #milkdown-editor :global(.ProseMirror li) { margin: 0.15em 0; }
+    #milkdown-editor :global(.ProseMirror li[data-type="taskList"]) { list-style: none; display: flex; align-items: start; gap: 0.4rem; }
+    #milkdown-editor :global(.ProseMirror li[data-type="taskList"] input[type="checkbox"]) { margin-top: 0.3rem; accent-color: var(--night-blue); }
+    /* Toolbar active state */
+    #toolbar-bar button.active { background: var(--night-blue) !important; color: #fff !important; border-color: var(--night-blue) !important; }
+    /* Font-size popup */
+    #font-size-popup {
+      position: absolute; top: 100%; left: 0; z-index: 100;
+      background: #fff; border: 1px solid var(--border-light);
+      border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      display: none; min-width: 90px;
+    }
+    #font-size-popup.show { display: block; }
+    #font-size-popup button {
+      display: block; width: 100%; text-align: left; padding: 6px 14px;
+      border: none; background: transparent; cursor: pointer;
+      font-family: inherit; color: var(--text-primary); font-size: 0.85rem;
+    }
+    #font-size-popup button:hover { background: var(--bg-soft); }
     /* Messages */
     .success-msg { color: #2d6a4f; background: #d8f3dc; padding: 0.5rem 1rem; border-radius: 4px; display: none; }
     .error-msg { color: #9b2226; background: #fadbd8; padding: 0.5rem 1rem; border-radius: 4px; display: none; }
@@ -226,19 +275,35 @@
   <div id="main">
     <!-- Toolbar (shown in editor view) -->
     <div id="toolbar-bar" style="display:none">
-      <button title="加粗 (Ctrl+B)" data-md="**bold**">B</button>
-      <button title="斜体 (Ctrl+I)" data-md="*italic*">I</button>
+      <button title="加粗 (Ctrl+B)" data-cmd="bold">B</button>
+      <button title="斜体 (Ctrl+I)" data-cmd="italic">I</button>
+      <button title="删除线" data-cmd="strike">S</button>
       <span class="sep"></span>
-      <button title="一级标题" data-md="# ">H1</button>
-      <button title="二级标题" data-md="## ">H2</button>
-      <button title="三级标题" data-md="### ">H3</button>
+      <button title="一级标题" data-cmd="h1">H1</button>
+      <button title="二级标题" data-cmd="h2">H2</button>
+      <button title="三级标题" data-cmd="h3">H3</button>
       <span class="sep"></span>
-      <button title="引用" data-md="> ">"</button>
-      <button title="分隔线" data-md="---">—</button>
-      <button title="无序列表" data-md="- ">•</button>
+      <button title="引用" data-cmd="blockquote">"</button>
+      <button title="分隔线" data-cmd="hr">—</button>
+      <button title="无序列表" data-cmd="bullet-list">•</button>
+      <button title="有序列表" data-cmd="ordered-list">1.</button>
       <span class="sep"></span>
+      <button title="表格" data-cmd="table">⊞</button>
+      <button title="代码块" data-cmd="code-block">&lt;/&gt;</button>
       <button title="插入图片" id="btn-image">📷</button>
-      <button title="切换预览" id="btn-preview">👁</button>
+      <span class="sep"></span>
+      <button title="字号" id="btn-font-size" style="position:relative">
+        Aa
+        <div id="font-size-popup">
+          <button data-size="0.85rem">小</button>
+          <button data-size="1rem">正常</button>
+          <button data-size="1.25rem">大</button>
+          <button data-size="1.6rem">特大</button>
+        </div>
+      </button>
+      <button title="左对齐" data-cmd="align-left">⬅</button>
+      <button title="居中" data-cmd="align-center">⬆</button>
+      <button title="右对齐" data-cmd="align-right">➡</button>
       <span class="sep"></span>
       <span style="font-size:0.75rem;color:var(--text-muted);margin-left:auto">Ctrl+S 保存</span>
     </div>
@@ -322,8 +387,7 @@
         <div style="margin-bottom:1rem">
           <label>正文（Markdown）</label>
           <div id="editor-area">
-            <textarea id="editor-textarea" placeholder="开始写作...&#10;&#10;支持 Markdown 语法：&#10;# 标题&#10;**粗体** *斜体*&#10;> 引用&#10;--- 分隔线"></textarea>
-            <div id="preview-pane"></div>
+            <div id="milkdown-editor"></div>
           </div>
         </div>
 
@@ -356,12 +420,27 @@
   </div>
 
   <script>
+    // ========== Milkdown Imports ==========
+    import { Editor, rootCtx, editorViewCtx } from '@milkdown/kit/core';
+    import { nord } from '@milkdown/theme-nord';
+    import { commonmark, toggleStrongCommand, toggleEmphasisCommand, wrapInHeadingCommand, wrapInBlockquoteCommand, wrapInBulletListCommand, wrapInOrderedListCommand, insertHrCommand, createCodeBlockCommand } from '@milkdown/kit/preset/commonmark';
+    import { gfm, toggleStrikethroughCommand, insertTableCommand } from '@milkdown/kit/preset/gfm';
+    import { listener, listenerCtx } from '@milkdown/kit/plugin/listener';
+    import { upload, uploadConfig } from '@milkdown/kit/plugin/upload';
+    import { history } from '@milkdown/kit/plugin/history';
+    import { cursor } from '@milkdown/kit/plugin/cursor';
+    import { callCommand, replaceAll, $prose } from '@milkdown/kit/utils';
+    import { Plugin, PluginKey } from '@milkdown/kit/prose/state';
+
     // ========== State ==========
     const CATEGORIES: Record<string, string> = { poetry: '诗歌', diary: '日记', essay: '散文', photography: '摄影', music: '音乐' };
     const MOODS: Record<string, string> = { tranquil: '静谧', nostalgic: '怀旧', dreamy: '梦幻', warm: '温暖', melancholic: '忧郁' };
     let currentView = 'list';
     let editingSlug: string | null = null;
     let tags: string[] = [];
+    let milkdownEditor: Editor | null = null;
+    let milkdownReady = false;
+    let currentMarkdown = '';
 
     // ========== Navigation ==========
     function switchView(view: string) {
@@ -376,6 +455,109 @@
       if (view === 'list') loadPostList();
       else if (view === 'new') resetEditor();
       else if (view === 'music') loadMusic();
+    }
+
+    // ========== Milkdown Editor ==========
+    async function initMilkdown() {
+      if (milkdownEditor) return;
+      if (!document.getElementById('milkdown-editor')) return;
+
+      try {
+        // Track active marks/nodes for toolbar button state
+        const activeStatePlugin = $prose(() => new Plugin({
+          key: new PluginKey('active-state'),
+          view: () => ({
+            update: (view) => {
+              if (!view.hasFocus()) return;
+              updateToolbarActiveState(view);
+            },
+          }),
+        }));
+
+        milkdownEditor = await Editor.make()
+          .config(nord)
+          .config((ctx) => {
+            ctx.set(rootCtx, document.getElementById('milkdown-editor'));
+          })
+          .use(commonmark)
+          .use(gfm)
+          .use(listener)
+          .use(upload)
+          .use(history)
+          .use(cursor)
+          .use(activeStatePlugin)
+          .create();
+
+        // Register callbacks AFTER editor is created (listenerCtx is now available)
+        milkdownEditor.action((ctx) => {
+          const lm = ctx.get(listenerCtx);
+          lm.markdownUpdated((_ctx, markdown) => {
+            currentMarkdown = markdown;
+          });
+        });
+
+        // Configure image upload after creation
+        milkdownEditor.action((ctx) => {
+          ctx.update(uploadConfig.key, (prev: any) => ({
+            ...prev,
+            uploader: async (files: any, schema: any) => {
+              const nodes: any[] = [];
+              for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (!file.type.startsWith('image/')) continue;
+                try {
+                  const resized = await resizeImage(file);
+                  const blob = resized === file ? file : resized;
+                  const path = await uploadFile(new File([blob], file.name, { type: blob.type }), 'image');
+                  const imgNode = schema.nodes.image.create({ src: path, alt: file.name });
+                  nodes.push(imgNode);
+                } catch { /* skip failed uploads */ }
+              }
+              return nodes.length === 1 ? nodes[0] : nodes;
+            },
+            enableHtmlFileUploader: false,
+          }));
+        });
+
+        milkdownReady = true;
+      } catch (err) {
+        console.error('Milkdown init failed:', err);
+        milkdownEditor = null;
+      }
+    }
+
+    function updateToolbarActiveState(view: any) {
+      const { state } = view;
+      const { selection, storedMarks } = state;
+      const { $from } = selection;
+      const marks = storedMarks || $from.marks();
+
+      // Reset all
+      document.querySelectorAll('#toolbar-bar button[data-cmd]').forEach(b => b.classList.remove('active'));
+
+      // Check active marks
+      function hasMark(name: string): boolean {
+        return marks.some((m: any) => m.type.name === name);
+      }
+      if (hasMark('strong')) document.querySelector('button[data-cmd="bold"]')?.classList.add('active');
+      if (hasMark('emphasis')) document.querySelector('button[data-cmd="italic"]')?.classList.add('active');
+      if (hasMark('strike_through')) document.querySelector('button[data-cmd="strike"]')?.classList.add('active');
+
+      // Check active node type by walking up the tree
+      for (let d = $from.depth; d > 0; d--) {
+        const nodeType = $from.node(d).type.name;
+        if (nodeType === 'heading') {
+          const level = $from.node(d).attrs.level;
+          const map: Record<number, string> = { 1: 'h1', 2: 'h2', 3: 'h3' };
+          if (map[level]) document.querySelector(`button[data-cmd="${map[level]}"]`)?.classList.add('active');
+          break;
+        }
+        if (nodeType === 'blockquote') { document.querySelector('button[data-cmd="blockquote"]')?.classList.add('active'); break; }
+        if (nodeType === 'bullet_list') { document.querySelector('button[data-cmd="bullet-list"]')?.classList.add('active'); break; }
+        if (nodeType === 'ordered_list') { document.querySelector('button[data-cmd="ordered-list"]')?.classList.add('active'); break; }
+        if (nodeType === 'code_block') { document.querySelector('button[data-cmd="code-block"]')?.classList.add('active'); break; }
+        if (nodeType === 'table') { document.querySelector('button[data-cmd="table"]')?.classList.add('active'); break; }
+      }
     }
 
     // ========== API helpers ==========
@@ -462,10 +644,16 @@
             const resized = await resizeImage(files[i]);
             const blob = resized === files[i] ? files[i] : resized;
             const path = await uploadFile(new File([blob], files[i].name, { type: blob.type }), 'image');
-            editorTextarea.setRangeText(`![图片](${path})\n`, editorTextarea.selectionStart, editorTextarea.selectionEnd, 'end');
-            updatePreview();
+            if (milkdownEditor && milkdownReady) {
+              milkdownEditor.action((ctx) => {
+                const view = ctx.get(editorViewCtx);
+                const { state, dispatch } = view;
+                const imgNode = state.schema.nodes.image.create({ src: path, alt: files[i].name });
+                dispatch(state.tr.replaceSelectionWith(imgNode));
+                view.focus();
+              });
+            }
           }
-          editorTextarea.focus();
           showSuccess(`${files.length} 张图片已插入`);
         }
       } catch (e: any) {
@@ -535,6 +723,7 @@
     function resetEditor() {
       editingSlug = null;
       tags = [];
+      currentMarkdown = '';
       (document.getElementById('post-title') as HTMLInputElement).value = '';
       (document.getElementById('post-date') as HTMLInputElement).value = new Date().toISOString().split('T')[0];
       (document.getElementById('post-category') as HTMLSelectElement).value = 'essay';
@@ -545,11 +734,14 @@
       (document.getElementById('post-image') as HTMLInputElement).value = '';
       (document.getElementById('post-imageAlt') as HTMLInputElement).value = '';
       (document.getElementById('post-slug') as HTMLInputElement).value = '';
-      (document.getElementById('editor-textarea') as HTMLTextAreaElement).value = '';
-      (document.getElementById('preview-pane')!).innerHTML = '';
       (document.getElementById('tag-input') as HTMLInputElement).value = '';
       renderTags();
-      updatePreview();
+      // Initialize or clear Milkdown editor
+      if (!milkdownEditor) {
+        initMilkdown().catch((err) => console.error('Milkdown init failed:', err));
+      } else if (milkdownReady) {
+        milkdownEditor.action(replaceAll(''));
+      }
       switchView('editor');
     }
 
@@ -570,10 +762,19 @@
         (document.getElementById('post-image') as HTMLInputElement).value = post.image || '';
         (document.getElementById('post-imageAlt') as HTMLInputElement).value = post.imageAlt || '';
         (document.getElementById('post-slug') as HTMLInputElement).value = slug;
-        (document.getElementById('editor-textarea') as HTMLTextAreaElement).value = post.body || '';
+        currentMarkdown = post.body || '';
         renderTags();
-        updatePreview();
         switchView('editor');
+        // Init editor and load content
+        if (!milkdownEditor) {
+          initMilkdown().then(() => {
+            if (milkdownEditor && milkdownReady && currentMarkdown) {
+              milkdownEditor.action(replaceAll(currentMarkdown));
+            }
+          }).catch((err) => console.error('Milkdown init failed:', err));
+        } else if (milkdownReady) {
+          milkdownEditor.action(replaceAll(currentMarkdown));
+        }
       } catch { /* error already shown */ }
     }
 
@@ -602,7 +803,7 @@
         draft,
       };
 
-      const body = (document.getElementById('editor-textarea') as HTMLTextAreaElement).value;
+      const body = currentMarkdown;
       const method = editingSlug ? 'PUT' : 'POST';
 
       try {
@@ -659,112 +860,106 @@
       (document.getElementById('tag-input') as HTMLInputElement)?.focus();
     }
 
-    // ========== Markdown Preview ==========
-    const editorTextarea = document.getElementById('editor-textarea') as HTMLTextAreaElement;
-    const previewPane = document.getElementById('preview-pane')!;
-
-    function simpleMarkdown(text: string): string {
-      let html = text
-        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-        // Headers
-        .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-        .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-        .replace(/^# (.+)$/gm, '<h1>$1</h1>')
-        // Bold, italic
-        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*(.+?)\*/g, '<em>$1</em>')
-        // Images
-        .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" />')
-        // Links
-        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
-        // Blockquote
-        .replace(/^> (.+)$/gm, (_, content) => {
-          const inner = content.replace(/<\/?[^>]+(>|$)/g, '');
-          return `<blockquote>${inner}</blockquote>`;
-        })
-        // HR
-        .replace(/^---$/gm, '<hr />')
-        // Unordered list
-        .replace(/^- (.+)$/gm, '<li>$1</li>')
-        // Paragraphs (double newline)
-        .split(/\n\n+/).map(block => {
-          const trimmed = block.trim();
-          if (!trimmed) return '';
-          if (/^<(h[1-3]|blockquote|hr|ul|ol|li|img)/.test(trimmed)) return trimmed;
-          if (/^<li>/.test(trimmed)) return `<ul>${trimmed}</ul>`;
-          return `<p>${trimmed.replace(/\n/g, '<br/>')}</p>`;
-        }).join('\n');
-      return html;
-    }
-
-    function updatePreview() {
-      previewPane.innerHTML = simpleMarkdown(editorTextarea.value) || '<p style="color:var(--text-muted);font-style:italic">预览区域...</p>';
-    }
-
-    editorTextarea.addEventListener('input', updatePreview);
-
     // ========== Toolbar ==========
-    document.getElementById('toolbar-bar')!.addEventListener('click', (e) => {
-      const btn = (e.target as HTMLElement).closest('button[data-md]') as HTMLButtonElement | null;
+    document.getElementById('toolbar-bar')!.addEventListener('click', async (e) => {
+      const btn = (e.target as HTMLElement).closest('button[data-cmd]') as HTMLButtonElement | null;
       if (!btn) return;
-      const md = btn.dataset.md!;
-      const ta = editorTextarea;
-      const start = ta.selectionStart;
-      const end = ta.selectionEnd;
-      const text = ta.value;
-      const selected = text.substring(start, end);
+      const cmd = btn.dataset.cmd!;
 
-      let replacement: string;
-      let cursorOffset: number;
+      // Font-size is handled separately via popup
+      if (cmd === 'font-size') return;
 
-      if (md === '**bold**') {
-        replacement = selected ? `**${selected}**` : '**粗体**';
-        cursorOffset = selected ? replacement.length : 2;
-      } else if (md === '*italic*') {
-        replacement = selected ? `*${selected}*` : '*斜体*';
-        cursorOffset = selected ? replacement.length : 1;
-      } else if (md.startsWith('#')) {
-        const lineStart = text.lastIndexOf('\n', start - 1) + 1;
-        replacement = md + text.substring(lineStart, end || start);
-        ta.setSelectionRange(lineStart, end || start);
-        cursorOffset = replacement.length;
-      } else if (md === '> ' || md === '- ') {
-        replacement = md + (selected || text.substring(text.lastIndexOf('\n', start - 1) + 1, end || start));
-        const lineStart = text.lastIndexOf('\n', start - 1) + 1;
-        ta.setSelectionRange(lineStart, end || start);
-        cursorOffset = replacement.length;
-      } else if (md === '---') {
-        replacement = '\n---\n';
-        cursorOffset = 0;
-      } else {
-        replacement = md;
-        cursorOffset = 0;
+      // Alignment is a custom action
+      if (cmd === 'align-left' || cmd === 'align-center' || cmd === 'align-right') {
+        applyAlignment(cmd.replace('align-', ''));
+        return;
       }
 
-      ta.setRangeText(replacement, ta.selectionStart, ta.selectionEnd, 'end');
-      ta.focus();
-      updatePreview();
+      if (!milkdownEditor || !milkdownReady) return;
+
+      milkdownEditor.action((ctx) => {
+        switch (cmd) {
+          case 'bold': callCommand(toggleStrongCommand.key)(ctx); break;
+          case 'italic': callCommand(toggleEmphasisCommand.key)(ctx); break;
+          case 'strike': callCommand(toggleStrikethroughCommand.key)(ctx); break;
+          case 'h1': callCommand(wrapInHeadingCommand.key, 1)(ctx); break;
+          case 'h2': callCommand(wrapInHeadingCommand.key, 2)(ctx); break;
+          case 'h3': callCommand(wrapInHeadingCommand.key, 3)(ctx); break;
+          case 'blockquote': callCommand(wrapInBlockquoteCommand.key)(ctx); break;
+          case 'bullet-list': callCommand(wrapInBulletListCommand.key)(ctx); break;
+          case 'ordered-list': callCommand(wrapInOrderedListCommand.key)(ctx); break;
+          case 'hr': callCommand(insertHrCommand.key)(ctx); break;
+          case 'code-block': callCommand(createCodeBlockCommand.key)(ctx); break;
+          case 'table': callCommand(insertTableCommand.key, { rows: 3, cols: 3, withHeaderRow: true })(ctx); break;
+        }
+      });
     });
 
-    // Toggle preview
-    let previewVisible = false;
-    document.getElementById('btn-preview')!.addEventListener('click', () => {
-      previewVisible = !previewVisible;
-      const editorArea = document.getElementById('editor-area')!;
-      const ta = editorTextarea;
-      const pp = previewPane;
-      if (previewVisible) {
-        ta.style.display = 'none';
-        pp.style.flex = '1';
-        pp.style.borderLeft = '1px solid var(--border-light)';
-      } else {
-        ta.style.display = '';
-        pp.style.flex = '1';
-        pp.style.borderLeft = 'none';
+    // Font-size popup
+    function toggleFontSizePopup(anchorBtn: HTMLElement) {
+      const popup = document.getElementById('font-size-popup')!;
+      const show = !popup.classList.contains('show');
+      // Close all other popups first
+      document.querySelectorAll('#font-size-popup.show').forEach(p => p.classList.remove('show'));
+      if (show) {
+        const rect = anchorBtn.getBoundingClientRect();
+        const toolbarRect = document.getElementById('toolbar-bar')!.getBoundingClientRect();
+        popup.style.left = (rect.left - toolbarRect.left) + 'px';
+        popup.style.top = rect.height + 'px';
+        popup.classList.add('show');
+      }
+    }
+
+    document.getElementById('btn-font-size')!.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleFontSizePopup(e.currentTarget as HTMLElement);
+    });
+
+    document.getElementById('font-size-popup')!.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement).closest('button[data-size]') as HTMLButtonElement;
+      if (!btn) return;
+      const size = btn.dataset.size!;
+      document.getElementById('font-size-popup')!.classList.remove('show');
+
+      if (!milkdownEditor || !milkdownReady) return;
+      milkdownEditor.action((ctx) => {
+        const view = ctx.get(editorViewCtx);
+        const { state, dispatch } = view;
+        const { from, to, empty } = state.selection;
+        if (empty) {
+          dispatch(state.tr.insertText(`<span style="font-size:${size}">文字</span>`, from));
+        } else {
+          const text = state.doc.textBetween(from, to);
+          dispatch(state.tr.insertText(`<span style="font-size:${size}">${text}</span>`, from, to));
+        }
+        view.focus();
+      });
+    });
+
+    // Text alignment
+    function applyAlignment(align: string) {
+      if (!milkdownEditor || !milkdownReady) return;
+      milkdownEditor.action((ctx) => {
+        const view = ctx.get(editorViewCtx);
+        const { state, dispatch } = view;
+        const { $from, $to } = state.selection;
+        const range = $from.blockRange($to);
+        if (!range) return;
+        const text = state.doc.textBetween(range.start, range.end, '\n');
+        dispatch(state.tr.insertText(`<div style="text-align:${align}">\n${text}\n</div>`, range.start, range.end));
+        view.focus();
+      });
+    }
+
+    // Close font-size popup when clicking outside
+    document.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest('#btn-font-size') && !target.closest('#font-size-popup')) {
+        document.getElementById('font-size-popup')!.classList.remove('show');
       }
     });
 
-    // Image button — pick file, upload, insert markdown at cursor
+    // Image button — pick file, upload, insert into Milkdown
     document.getElementById('btn-image')!.addEventListener('click', () => {
       pickFile('editor', 'image/png,image/jpeg,image/gif,image/webp,image/svg+xml');
     });
@@ -776,43 +971,11 @@
         e.preventDefault();
         savePost(true);
       }
-      if ((e.ctrlKey || e.metaKey) && e.key === 'b') {
-        e.preventDefault();
-        const ta = editorTextarea;
-        const s = ta.value.substring(ta.selectionStart, ta.selectionEnd) || '粗体';
-        ta.setRangeText(`**${s}**`, ta.selectionStart, ta.selectionEnd, 'end');
-        updatePreview();
-      }
-      if ((e.ctrlKey || e.metaKey) && e.key === 'i') {
-        e.preventDefault();
-        const ta = editorTextarea;
-        const s = ta.value.substring(ta.selectionStart, ta.selectionEnd) || '斜体';
-        ta.setRangeText(`*${s}*`, ta.selectionStart, ta.selectionEnd, 'end');
-        updatePreview();
-      }
+      // Ctrl+B, Ctrl+I, etc. are handled by Milkdown's built-in keymaps
     });
 
-    // Paste image
-    document.addEventListener('paste', (e) => {
-      if (currentView !== 'editor' && currentView !== 'new') return;
-      const items = e.clipboardData?.items;
-      if (!items) return;
-      for (const item of items) {
-        if (item.type.startsWith('image/')) {
-          e.preventDefault();
-          const blob = item.getAsFile();
-          if (!blob) continue;
-          const reader = new FileReader();
-          reader.onload = () => {
-            const ta = editorTextarea;
-            ta.setRangeText(`![图片](${reader.result})`, ta.selectionStart, ta.selectionEnd, 'end');
-            ta.focus();
-            updatePreview();
-          };
-          reader.readAsDataURL(blob);
-        }
-      }
-    });
+    // Paste images — let Milkdown's upload plugin handle it
+    // (No custom paste handler needed)
 
     // File upload buttons — pick file, upload, fill target field
     document.getElementById('btn-upload-image')!.addEventListener('click', () =>
@@ -911,7 +1074,6 @@
 
     // ========== Init ==========
     loadPostList();
-    updatePreview();
   </script>
 </body>
 </html>

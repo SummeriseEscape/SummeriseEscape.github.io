@@ -2,22 +2,42 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
     <loc>https://starrybreeze.github.io/</loc>
-    <lastmod>2026-06-09</lastmod>
+    <lastmod>2026-06-10</lastmod>
   </url>
   <url>
     <loc>https://starrybreeze.github.io/posts/</loc>
-    <lastmod>2026-06-09</lastmod>
+    <lastmod>2026-06-10</lastmod>
   </url>
   <url>
     <loc>https://starrybreeze.github.io/about/</loc>
-    <lastmod>2026-06-09</lastmod>
+    <lastmod>2026-06-10</lastmod>
   </url>
   <url>
     <loc>https://starrybreeze.github.io/posts/starry-summer/</loc>
     <lastmod>2026-05-10</lastmod>
   </url>
   <url>
+    <loc>https://starrybreeze.github.io/posts/旅行掠影/</loc>
+    <lastmod>2026-06-09</lastmod>
+  </url>
+  <url>
     <loc>https://starrybreeze.github.io/posts/雨季/</loc>
+    <lastmod>2026-06-09</lastmod>
+  </url>
+  <url>
+    <loc>https://starrybreeze.github.io/posts/南理工时光/</loc>
+    <lastmod>2026-06-09</lastmod>
+  </url>
+  <url>
+    <loc>https://starrybreeze.github.io/posts/关于炎热的梦/</loc>
+    <lastmod>2026-06-09</lastmod>
+  </url>
+  <url>
+    <loc>https://starrybreeze.github.io/posts/那年夏天/</loc>
+    <lastmod>2026-06-09</lastmod>
+  </url>
+  <url>
+    <loc>https://starrybreeze.github.io/posts/黄桷晚风/</loc>
     <lastmod>2026-06-09</lastmod>
   </url>
 </urlset>
